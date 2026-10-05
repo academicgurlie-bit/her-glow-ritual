@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Her Glow Ritual — Soft Fall Edition</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Her Glow">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#FBF3E6">
+<link rel="manifest" id="pwa-manifest">
+<link rel="apple-touch-icon" id="apple-touch-icon">
+<link rel="icon" type="image/png" id="favicon">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Cormorant+Garamond:ital,wght@1,400;1,500&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FBF3E6; --bg2:#F6E9D3;
+    --card:#FFFDF7; --card2:#FDF5E7;
+    --ink:#5B3A26; --ink-soft:#8A6A4E; --muted:#B89B7C;
+    --pumpkin:#E08345; --pumpkin-deep:#C96F33; --caramel:#D9A441;
+    --blush:#F2B79B; --rose:#D97E6A; --sage:#9CA87B;
+    --border:#F0DFC0; --border-soft:#F6E9D2;
+    --shadow:0 10px 28px rgba(190,130,70,.12);
+    --shadow-sm:0 4px 14px rgba(190,130,70,.10);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  body{background:linear-gradient(180deg,var(--bg) 0%,var(--bg2) 100%);color:var(--ink);font-family:"Nunito",sans-serif;min-height:100vh;overflow-x:hidden;}
+  body::before{content:"";position:fixed;inset:0;background:
+    radial-gradient(ellipse at 12% 0%,rgba(224,131,69,.14) 0%,transparent 55%),
+    radial-gradient(ellipse at 88% 8%,rgba(217,164,65,.12) 0%,transparent 50%),
+    radial-gradient(ellipse at 50% 100%,rgba(242,183,155,.14) 0%,transparent 60%);
+    pointer-events:none;z-index:0;}
+  .leaf-field{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+  .leaf{position:absolute;top:-40px;opacity:.4;animation:leafFall linear infinite;}
+  @keyframes leafFall{0%{transform:translateY(-5vh) translateX(0) rotate(0deg);opacity:0;}8%{opacity:.4;}92%{opacity:.35;}100%{transform:translateY(105vh) translateX(28px) rotate(330deg);opacity:0;}}
+  button{font-family:"Nunito",sans-serif;}
+  button:active{transform:scale(.97);}
+
+  .app{position:relative;z-index:1;max-width:500px;margin:0 auto;min-height:100vh;padding-bottom:40px;}
+
+  /* ── header ── */
+  .app-header{text-align:center;padding:30px 24px 16px;position:relative;}
+  .mascot{width:84px;height:84px;margin:0 auto 4px;animation:bob 3.2s ease-in-out infinite;filter:drop-shadow(0 6px 10px rgba(190,120,60,.25));}
+  @keyframes bob{0%,100%{transform:translateY(0) rotate(-2deg);}50%{transform:translateY(-7px) rotate(2deg);}}
+  .app-eyebrow{font-size:10px;font-weight:800;letter-spacing:.38em;text-transform:uppercase;color:var(--pumpkin-deep);margin-bottom:8px;}
+  .app-title{font-family:"Playfair Display",serif;font-size:clamp(30px,7vw,42px);font-weight:700;color:var(--ink);line-height:1.05;margin-bottom:6px;}
+  .app-title em{font-style:italic;color:var(--pumpkin-deep);}
+  .app-sub{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:16px;color:var(--ink-soft);line-height:1.5;max-width:330px;margin:0 auto;}
+  .hdr-btns{position:absolute;top:26px;right:14px;display:flex;gap:8px;}
+  .hbtn{width:38px;height:38px;border-radius:50%;border:1.5px solid var(--border);background:var(--card);color:var(--ink-soft);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow-sm);transition:all .2s;}
+  .hbtn:hover{border-color:var(--pumpkin);color:var(--pumpkin-deep);}
+  .hbtn.off{opacity:.4;}
+
+  /* ── tabs / days / modes ── */
+  .time-tabs{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:6px 16px 0;}
+  .time-tab{padding:12px;border:2px solid var(--border);border-radius:18px;cursor:pointer;font-size:13px;font-weight:800;letter-spacing:.06em;background:var(--card);color:var(--muted);transition:all .25s;box-shadow:var(--shadow-sm);}
+  .time-tab .ti{font-size:20px;display:block;margin-bottom:2px;}
+  .time-tab.active{color:var(--ink);border-color:var(--pumpkin);background:linear-gradient(135deg,#FFF6E8,#FDEBD2);box-shadow:var(--shadow);}
+  .day-row{display:flex;gap:7px;padding:14px 16px 4px;overflow-x:auto;scrollbar-width:none;}
+  .day-row::-webkit-scrollbar{display:none;}
+  .day-pill{flex-shrink:0;padding:8px 14px;border-radius:999px;border:2px solid var(--border);cursor:pointer;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;transition:all .2s;background:var(--card);color:var(--muted);position:relative;}
+  .day-pill.active{background:linear-gradient(135deg,var(--pumpkin),var(--pumpkin-deep));border-color:var(--pumpkin-deep);color:#fff;box-shadow:0 6px 16px rgba(224,131,69,.35);}
+  .day-pill.gym::after{content:"\1F4AA";font-size:9px;position:absolute;top:-7px;right:-4px;}
+  .lab-row{display:none;padding:10px 16px 0;gap:8px;}
+  .lab-row.vis{display:flex;}
+  .lab-btn{flex:1;padding:10px 6px;border-radius:14px;border:2px solid var(--border);background:var(--card);color:var(--muted);font-size:12px;font-weight:800;cursor:pointer;transition:all .2s;}
+  .lab-btn.active{background:linear-gradient(135deg,#F3E2C7,#EDD3AC);border-color:var(--caramel);color:var(--ink);}
+  .mode-bar{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:12px 16px 0;}
+  .mbtn{padding:11px 6px;border-radius:16px;border:2px solid var(--border);cursor:pointer;font-size:11px;font-weight:800;transition:all .25s;background:var(--card);color:var(--muted);text-align:center;box-shadow:var(--shadow-sm);}
+  .mbtn .mi{font-size:19px;display:block;margin-bottom:3px;}
+  .mbtn.active{color:var(--ink);border-color:var(--pumpkin);background:linear-gradient(135deg,#FFF3DF,#FBE3C2);box-shadow:var(--shadow);}
+
+  /* ── summary ── */
+  .deadline-strip{margin:12px 16px 0;background:linear-gradient(135deg,#FCEBD4,#F9DFC0);border:2px solid #EAC98F;border-radius:16px;padding:10px 14px;font-size:12px;font-weight:800;color:#9A6420;line-height:1.5;}
+  .sum-card{margin:12px 16px 0;background:linear-gradient(135deg,#FFF9EE,#FDEFD8);border:2px solid var(--border);border-radius:24px;padding:18px;display:flex;align-items:center;justify-content:space-between;gap:12px;box-shadow:var(--shadow);position:relative;overflow:hidden;}
+  .sum-card::after{content:"🍂";position:absolute;right:10px;bottom:6px;font-size:26px;opacity:.25;transform:rotate(-18deg);}
+  .sc-lbl{font-size:9px;font-weight:800;letter-spacing:.3em;text-transform:uppercase;color:var(--pumpkin-deep);margin-bottom:5px;}
+  .sc-dur{font-family:"Playfair Display",serif;font-size:30px;font-weight:700;color:var(--ink);line-height:1;}
+  .sc-type{font-size:11px;font-weight:700;color:var(--muted);margin-top:4px;letter-spacing:.03em;}
+  .sbtn{flex-shrink:0;padding:14px 22px;background:linear-gradient(135deg,var(--pumpkin),var(--pumpkin-deep));color:#fff;border:none;border-radius:999px;font-size:14px;font-weight:800;letter-spacing:.03em;cursor:pointer;transition:all .2s;box-shadow:0 8px 20px rgba(224,131,69,.4);}
+  .sbtn:hover{transform:translateY(-2px);box-shadow:0 12px 24px rgba(224,131,69,.45);}
+
+  /* ── preview list ── */
+  .preview{padding:4px 16px 40px;}
+  .ph{display:flex;align-items:center;gap:10px;margin:20px 2px 10px;}
+  .phl{flex:1;height:2px;background:linear-gradient(90deg,transparent,var(--border),transparent);border-radius:2px;}
+  .phn{font-size:10px;font-weight:800;letter-spacing:.24em;text-transform:uppercase;color:var(--pumpkin-deep);white-space:nowrap;background:#FBEED8;padding:5px 12px;border-radius:999px;border:1.5px solid var(--border);}
+  .srow{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;background:var(--card);border:2px solid var(--border-soft);border-radius:18px;margin-bottom:8px;box-shadow:var(--shadow-sm);transition:all .2s;}
+  .srow.mile{border-style:dashed;border-color:var(--caramel);background:#FDF3DF;}
+  .srow.done{opacity:.35;}.srow.done .srn{text-decoration:line-through;}
+  .srow.cur{border-color:var(--pumpkin);background:#FFF4E2;box-shadow:var(--shadow);}
+  .srchk{width:22px;height:22px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;margin-top:1px;color:var(--pumpkin-deep);background:#fff;}
+  .srow.done .srchk{background:var(--pumpkin);border-color:var(--pumpkin);color:#fff;}
+  .src{flex:1;min-width:0;}
+  .srn{font-size:13px;font-weight:800;color:var(--ink);margin-bottom:2px;line-height:1.35;}
+  .srd{font-size:11.5px;color:var(--ink-soft);line-height:1.5;}
+  .srdur{font-size:10px;font-weight:800;color:var(--muted);flex-shrink:0;margin-top:3px;background:#F8EEDC;padding:3px 8px;border-radius:999px;}
+
+  /* ── active ritual view ── */
+  #av{display:none;position:fixed;inset:0;background:linear-gradient(180deg,var(--bg) 0%,var(--bg2) 100%);z-index:100;overflow-y:auto;}
+  #av.vis{display:block;}
+  .av-inner{position:relative;z-index:1;max-width:500px;margin:0 auto;}
+  .av-sticky{position:sticky;top:0;background:rgba(251,243,230,.94);backdrop-filter:blur(8px);z-index:10;padding:14px 16px 12px;border-bottom:2px solid var(--border);}
+  .av-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+  .av-meta{font-size:10px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--pumpkin-deep);}
+  .av-exit{padding:7px 14px;border:2px solid var(--border);border-radius:999px;background:var(--card);color:var(--muted);font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;transition:all .2s;}
+  .av-exit:hover{border-color:var(--rose);color:var(--rose);}
+  .av-nr{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+  .av-rn{font-family:"Playfair Display",serif;font-size:16px;font-weight:700;color:var(--ink);}
+  .av-sc{font-size:10px;font-weight:800;color:var(--muted);}
+  .av-pt{height:8px;background:#F1E2C8;border-radius:99px;overflow:hidden;}
+  .av-pf{height:100%;background:linear-gradient(90deg,var(--pumpkin),var(--caramel));border-radius:99px;transition:width .5s ease;}
+  .fstrip{margin:12px 16px;display:flex;justify-content:space-between;align-items:center;background:var(--card);border:2px solid var(--border-soft);border-radius:18px;padding:12px 16px;box-shadow:var(--shadow-sm);}
+  .fsl{font-size:9px;font-weight:800;letter-spacing:.26em;text-transform:uppercase;color:var(--muted);margin-bottom:3px;}
+  .fst{font-family:"Playfair Display",serif;font-size:22px;font-weight:700;color:var(--pumpkin-deep);}
+  .fsr-col{display:flex;flex-direction:column;align-items:flex-end;gap:6px;}
+  .fsr{font-size:11px;font-weight:800;color:var(--muted);}
+  .ts-row{display:flex;gap:6px;}
+  .tsbtn{padding:5px 11px;border:2px solid var(--border);border-radius:10px;background:var(--card);color:var(--muted);font-size:11px;font-weight:800;cursor:pointer;transition:all .18s;}
+  .tsbtn:hover{border-color:var(--pumpkin);color:var(--pumpkin-deep);}
+
+  /* ── current step card ── */
+  .ccw{padding:4px 16px 0;}
+  .cc{background:var(--card);border:2px solid var(--pumpkin);border-radius:26px;padding:22px 18px;position:relative;overflow:hidden;box-shadow:var(--shadow);}
+  .cc::before{content:"";position:absolute;top:0;left:0;right:0;height:5px;background:linear-gradient(90deg,var(--pumpkin),var(--caramel),var(--blush));}
+  .cc-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;}
+  .cc-ph{font-size:9px;font-weight:800;letter-spacing:.3em;text-transform:uppercase;color:var(--pumpkin-deep);margin-bottom:8px;}
+  .cc-nm{font-family:"Playfair Display",serif;font-size:21px;font-weight:700;color:var(--ink);line-height:1.25;margin-bottom:5px;}
+  .cc-eta{font-size:11px;font-weight:800;color:var(--caramel);margin-bottom:10px;letter-spacing:.03em;}
+  .cc-dt{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:16.5px;color:var(--ink-soft);line-height:1.65;margin-bottom:18px;}
+  .cc-mascot{width:64px;height:64px;flex-shrink:0;animation:bob 3s ease-in-out infinite;}
+  .rw{display:flex;justify-content:center;margin-bottom:18px;}
+  .rc{position:relative;width:118px;height:118px;}
+  .rc svg{position:absolute;top:0;left:0;transform:rotate(-90deg);}
+  .rbg{fill:none;stroke:#F1E2C8;stroke-width:9;}
+  .rfg{fill:none;stroke-width:9;stroke-linecap:round;transition:stroke-dashoffset 1s linear;}
+  .rfg.warn{stroke:#D9A441;}
+  .ri{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+  .rd{font-size:26px;font-weight:800;color:var(--ink);line-height:1;font-variant-numeric:tabular-nums;}
+  .ru{font-size:9px;font-weight:800;color:var(--muted);letter-spacing:.22em;text-transform:uppercase;margin-top:4px;}
+  .rc.pulse{animation:ringPulse 2s ease infinite;}
+  @keyframes ringPulse{0%,100%{transform:scale(1);}50%{transform:scale(1.03);}}
+  .brbtn{width:100%;padding:13px;background:linear-gradient(135deg,#F6E3C2,#F2D3A8);border:2px dashed var(--caramel);color:#9A6420;border-radius:16px;font-size:13px;font-weight:800;cursor:pointer;transition:all .2s;margin-bottom:12px;}
+  .brbtn:hover{background:linear-gradient(135deg,#F2D3A8,#EDC48E);}
+  .mbdb{width:100%;padding:14px;background:linear-gradient(135deg,var(--pumpkin),var(--pumpkin-deep));border:none;color:#fff;border-radius:16px;font-size:14px;font-weight:800;cursor:pointer;transition:all .2s;margin-bottom:12px;box-shadow:0 8px 20px rgba(224,131,69,.35);}
+  .mbdb:hover{transform:translateY(-1px);}
+  .ccc{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
+  .cb{padding:12px 6px;border-radius:14px;border:2px solid var(--border);background:var(--card2);color:var(--ink);font-size:12px;font-weight:800;cursor:pointer;transition:all .18s;text-align:center;}
+  .cb:hover{border-color:var(--pumpkin);color:var(--pumpkin-deep);}
+  .cb.pri{background:linear-gradient(135deg,var(--pumpkin),var(--pumpkin-deep));border-color:var(--pumpkin-deep);color:#fff;}
+  .cb:disabled{opacity:.25;cursor:not-allowed;}
+  .sparkle{position:absolute;font-size:14px;pointer-events:none;animation:sparkFly .9s ease-out forwards;z-index:5;}
+  @keyframes sparkFly{0%{opacity:1;transform:translate(0,0) scale(.6);}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(1.4);}}
+
+  .aaw{padding:16px 16px 100px;}
+  .aat{font-size:10px;font-weight:800;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
+
+  /* ── completion ── */
+  .dscr{margin:18px 16px;background:linear-gradient(135deg,#FFF9EE,#FDEFD8);border:2.5px solid var(--pumpkin);border-radius:28px;padding:36px 20px;text-align:center;display:none;box-shadow:var(--shadow);position:relative;overflow:hidden;}
+  .dscr.vis{display:block;}
+  .de{font-size:52px;margin-bottom:10px;animation:bob 2.6s ease-in-out infinite;}
+  .dt{font-family:"Playfair Display",serif;font-size:27px;font-weight:700;color:var(--ink);margin-bottom:6px;}
+  .dt em{font-style:italic;color:var(--pumpkin-deep);}
+  .dsb{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:16.5px;color:var(--ink-soft);margin-bottom:18px;line-height:1.6;max-width:330px;margin-left:auto;margin-right:auto;}
+  .dss{display:flex;gap:8px;justify-content:center;margin-bottom:20px;}
+  .ds{background:var(--card);border:2px solid var(--border-soft);border-radius:16px;padding:12px 10px;flex:1;text-align:center;box-shadow:var(--shadow-sm);}
+  .dsv{font-size:18px;font-weight:800;color:var(--pumpkin-deep);margin-bottom:3px;}
+  .dsl{font-size:9px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;}
+  .mood-row{display:flex;gap:10px;justify-content:center;margin-bottom:20px;}
+  .mood-btn{width:62px;height:62px;border-radius:50%;border:2.5px solid var(--border);background:var(--card);font-size:28px;cursor:pointer;transition:all .2s;box-shadow:var(--shadow-sm);}
+  .mood-btn:hover{border-color:var(--pumpkin);transform:scale(1.08);}
+  .mood-btn.picked{border-color:var(--pumpkin-deep);background:#FDEBD2;transform:scale(1.1);}
+  .mood-lbl{font-size:10px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
+  .dbb{width:100%;padding:14px;background:transparent;border:2.5px solid var(--pumpkin);color:var(--pumpkin-deep);border-radius:16px;font-size:13px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;transition:all .2s;}
+  .dbb:hover{background:var(--pumpkin);color:#fff;}
+  .confetti{position:absolute;top:-20px;pointer-events:none;animation:confFall linear forwards;z-index:6;}
+  @keyframes confFall{to{transform:translateY(560px) translateX(var(--sway)) rotate(var(--spin));opacity:0;}}
+
+  /* ── overlays ── */
+  .ov{display:none;position:fixed;inset:0;background:rgba(91,58,38,.45);backdrop-filter:blur(3px);z-index:200;overflow-y:auto;}
+  .ov.vis{display:block;}
+  .ov-inner{max-width:500px;margin:0 auto;padding:26px 18px 90px;}
+  .ov-card{background:var(--card);border:2px solid var(--border);border-radius:26px;padding:22px 18px;box-shadow:var(--shadow);animation:fadeUp .3s ease both;}
+  .ov-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+  .ov-title{font-family:"Playfair Display",serif;font-size:23px;font-weight:700;color:var(--ink);}
+  .ov-title em{font-style:italic;color:var(--pumpkin-deep);}
+  .rem-sec{background:var(--card2);border:2px solid var(--border-soft);border-radius:18px;padding:16px;margin-bottom:12px;}
+  .rem-sec h3{font-size:10px;font-weight:800;letter-spacing:.22em;text-transform:uppercase;color:var(--pumpkin-deep);margin-bottom:10px;}
+  .rem-sec ol,.rem-sec ul{padding-left:18px;}
+  .rem-sec li{font-size:13px;font-weight:600;color:var(--ink-soft);line-height:1.7;margin-bottom:4px;}
+
+  /* pumpkin patch */
+  .patch-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin:14px 0;}
+  .pday{text-align:center;}
+  .pday-l{font-size:9px;font-weight:800;color:var(--muted);text-transform:uppercase;margin-bottom:5px;}
+  .pslot{aspect-ratio:1;border-radius:14px;border:2px dashed var(--border);background:var(--card2);display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:5px;}
+  .pslot.got{border-style:solid;border-color:var(--pumpkin);background:#FDEBD2;}
+  .pslot.today{box-shadow:0 0 0 2.5px var(--pumpkin);}
+  .patch-stats{display:flex;gap:8px;margin-top:6px;}
+  .pstat{flex:1;background:var(--card2);border:2px solid var(--border-soft);border-radius:16px;padding:12px 8px;text-align:center;}
+  .pstat-v{font-size:20px;font-weight:800;color:var(--pumpkin-deep);}
+  .pstat-l{font-size:9px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-top:2px;}
+
+  /* breathing */
+  .br-card{text-align:center;padding:40px 20px;}
+  .br-circle{width:190px;height:190px;margin:6px auto 18px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#F7C489,#E08345);display:flex;align-items:center;justify-content:center;box-shadow:0 14px 34px rgba(224,131,69,.4);transition:transform 4s ease-in-out;}
+  .br-circle span{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:20px;color:#fff;text-shadow:0 1px 6px rgba(120,60,20,.4);}
+  .br-hint{font-size:12px;font-weight:700;color:var(--muted);margin-bottom:18px;}
+
+  @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+  .fi{animation:fadeUp .3s ease both;}
+</style>
+</head>
+<body>
+<div class="leaf-field" id="leafField"></div>
+<div class="app">
+  <div class="app-header">
+    <div class="hdr-btns">
+      <button class="hbtn" id="soundBtn" onclick="togSound()" title="sounds">🔔</button>
+      <button class="hbtn" onclick="openPatch()" title="my pumpkin patch">🎃</button>
+      <button class="hbtn" onclick="openRem()" title="reminders">🍂</button>
+    </div>
+    <div class="mascot" id="hdrMascot"></div>
+    <div class="app-eyebrow">🍂 Her Glow Ritual 🍂</div>
+    <div class="app-title">Soft <em>Fall</em> Ritual</div>
+    <div class="app-sub" id="affirmLine">cozy mornings &amp; nights · three ways to glow</div>
+  </div>
+
+  <div class="time-tabs">
+    <button class="time-tab active" id="tab-m" onclick="setTime('morning')"><span class="ti">☀️</span>Morning</button>
+    <button class="time-tab" id="tab-n" onclick="setTime('night')"><span class="ti">🌙</span>Night</button>
+  </div>
+  <div class="day-row" id="day-row"></div>
+  <div class="lab-row" id="lab-row">
+    <button class="lab-btn" id="lab-yes" onclick="setLab(true)">🧪 Lab Tuesday</button>
+    <button class="lab-btn active" id="lab-no" onclick="setLab(false)">🍃 Chill Tuesday</button>
+  </div>
+  <div class="mode-bar">
+    <button class="mbtn active" id="mode-soft" onclick="setMode('soft')"><span class="mi">🍂</span>Soft Girl</button>
+    <button class="mbtn" id="mode-full" onclick="setMode('full')"><span class="mi">👑</span>Full Slay</button>
+    <button class="mbtn" id="mode-bare" onclick="setMode('bare')"><span class="mi">🕯️</span>Bare Min</button>
+  </div>
+  <div class="deadline-strip" id="deadline-strip" style="display:none;"></div>
+  <div class="sum-card">
+    <div>
+      <div class="sc-lbl">✨ Today's Ritual ✨</div>
+      <div class="sc-dur" id="sc-dur">— min</div>
+      <div class="sc-type" id="sc-type">—</div>
+    </div>
+    <button class="sbtn" onclick="startR()">Begin →</button>
+  </div>
+  <div class="preview" id="preview"></div>
+</div>
+
+<div id="av">
+<div class="av-inner">
+  <div class="av-sticky">
+    <div class="av-top">
+      <div class="av-meta" id="av-meta">Monday · Soft Girl</div>
+      <button class="av-exit" onclick="exitR()">✕ Exit</button>
+    </div>
+    <div class="av-nr">
+      <div class="av-rn" id="av-rn">Morning Ritual</div>
+      <div class="av-sc" id="av-sc">Step 1 of 12</div>
+    </div>
+    <div class="av-pt"><div class="av-pf" id="av-pf" style="width:0%"></div></div>
+  </div>
+  <div class="fstrip">
+    <div>
+      <div class="fsl">Done by</div>
+      <div class="fst" id="av-ft">—</div>
+    </div>
+    <div class="fsr-col">
+      <div class="fsr" id="av-rm">— min left</div>
+      <div class="ts-row">
+        <button class="tsbtn" onclick="shiftTime(-300)">−5m</button>
+        <button class="tsbtn" onclick="shiftTime(300)">+5m</button>
+      </div>
+    </div>
+  </div>
+  <div class="ccw" id="ccw"></div>
+  <div class="aaw">
+    <div class="aat">✨ All Steps</div>
+    <div id="av-list"></div>
+  </div>
+  <div class="dscr" id="dscr">
+    <div class="de" id="de">🌸</div>
+    <div class="dt">Ritual <em>Complete</em></div>
+    <div class="dsb" id="dsb">You showed up for yourself.</div>
+    <div class="dss">
+      <div class="ds"><div class="dsv" id="dsv1">—</div><div class="dsl">Finished</div></div>
+      <div class="ds"><div class="dsv" id="dsv2">—</div><div class="dsl">Minutes</div></div>
+      <div class="ds"><div class="dsv" id="dsv3">—</div><div class="dsl">Steps</div></div>
+    </div>
+    <div class="mood-lbl">how are you feeling, pretty?</div>
+    <div class="mood-row">
+      <button class="mood-btn" id="mood-cozy" onclick="setMood('cozy')">😌</button>
+      <button class="mood-btn" id="mood-loved" onclick="setMood('loved')">🥰</button>
+      <button class="mood-btn" id="mood-sleepy" onclick="setMood('sleepy')">😴</button>
+    </div>
+    <button class="dbb" onclick="exitR()">← Back to Rituals</button>
+  </div>
+</div>
+</div>
+
+<div class="ov" id="remOv">
+  <div class="ov-inner">
+    <div class="ov-card">
+      <div class="ov-head">
+        <div class="ov-title">✨ <em>Weekly &amp; Monthly</em> Reminders</div>
+        <button class="av-exit" onclick="closeRem()">✕ Close</button>
+      </div>
+      <div class="rem-sec">
+        <h3>Monthly</h3>
+        <ul>
+          <li><strong>Baby Foot Peel</strong> — once a month. Booties on for an hour, seal with socks, peeling starts in 3–5 days. Plan it for a week you're mostly home. Pairs with a Sunday soft-reset night.</li>
+          <li><strong>Moroccan Hammam Swap</strong> — first Saturday of the month, in place of the regular deep-clean night.</li>
+        </ul>
+      </div>
+      <div class="rem-sec">
+        <h3>Hair Removal / Ingrown Reminder System</h3>
+        <ol>
+          <li>Exfoliate the day before</li>
+          <li>Trim on clean, dry skin</li>
+          <li>Rinse cool, pat dry</li>
+          <li>Tend Skin once fully dry</li>
+          <li>Fragrance-free moisturizer that night</li>
+          <li>First Aid Beauty Ingrown Pads starting the next day, 2–3x/week</li>
+          <li>Never Tend Skin + Ingrown Pads in the same session</li>
+          <li>Veet only as tolerated — patch test, never on irritated skin</li>
+          <li>Epilator = experimental, start small</li>
+        </ol>
+      </div>
+      <div class="rem-sec">
+        <h3>Scent System (when fragrance is appropriate)</h3>
+        <ol>
+          <li>Vaseline on pulse points — wrists, inner elbows, behind ears, throat, chest, behind knees</li>
+          <li>Perfume oil on top — dab, never rub</li>
+          <li>Body mist last, optional</li>
+          <li>Scented powder once skin is fully dry — light dust on friction zones only (underboob, inner thighs, between cheeks)</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="ov" id="patchOv">
+  <div class="ov-inner">
+    <div class="ov-card">
+      <div class="ov-head">
+        <div class="ov-title">🎃 My <em>Pumpkin Patch</em></div>
+        <button class="av-exit" onclick="closePatch()">✕ Close</button>
+      </div>
+      <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:16px;color:var(--ink-soft);line-height:1.6;margin-bottom:6px;">Every ritual you finish plants a pumpkin. Grow your patch, pretty.</div>
+      <div class="patch-grid" id="patchGrid"></div>
+      <div class="patch-stats">
+        <div class="pstat"><div class="pstat-v" id="ps-total">0</div><div class="pstat-l">Pumpkins</div></div>
+        <div class="pstat"><div class="pstat-v" id="ps-streak">0</div><div class="pstat-l">Day Streak</div></div>
+        <div class="pstat"><div class="pstat-v" id="ps-week">0/14</div><div class="pstat-l">This Week</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="ov" id="breathOv">
+  <div class="ov-inner">
+    <div class="ov-card br-card">
+      <div class="ov-title" style="margin-bottom:4px;">🍂 <em>breathe</em> with me</div>
+      <div class="br-hint">follow the circle · it loops until you're ready</div>
+      <div class="br-circle" id="brCircle"><span id="brTxt">breathe in</span></div>
+      <button class="dbb" onclick="closeBreath()">i'm calm now 🤍</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── PWA Icon (soft fall pumpkin) ────────────────────────────────────────────
+function rrect(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.quadraticCurveTo(x+w,y,x+w,y+r);ctx.lineTo(x+w,y+h-r);ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);ctx.lineTo(x+r,y+h);ctx.quadraticCurveTo(x,y+h,x,y+h-r);ctx.lineTo(x,y+r);ctx.quadraticCurveTo(x,y,x+r,y);ctx.closePath();}
+function buildIcon(){
+  const S=512,cx=256,c=document.createElement('canvas');c.width=S;c.height=S;const ctx=c.getContext('2d');
+  rrect(ctx,0,0,S,S,112);const bgG=ctx.createLinearGradient(0,0,0,S);bgG.addColorStop(0,'#FDF3E2');bgG.addColorStop(1,'#F3DFC0');ctx.fillStyle=bgG;ctx.fill();
+  ctx.save();const halo=ctx.createRadialGradient(cx,300,0,cx,300,200);halo.addColorStop(0,'rgba(217,164,65,0.35)');halo.addColorStop(1,'rgba(217,164,65,0)');ctx.fillStyle=halo;ctx.beginPath();ctx.arc(cx,300,200,0,Math.PI*2);ctx.fill();ctx.restore();
+  // pumpkin body
+  ctx.save();
+  const pg=ctx.createLinearGradient(cx-120,0,cx+120,0);pg.addColorStop(0,'#D97E3E');pg.addColorStop(0.5,'#F0A05C');pg.addColorStop(1,'#D97E3E');
+  ctx.fillStyle=pg;ctx.beginPath();ctx.ellipse(cx,310,118,96,0,0,Math.PI*2);ctx.fill();
+  ctx.strokeStyle='rgba(150,80,30,0.35)';ctx.lineWidth=7;
+  [-60,0,60].forEach(o=>{ctx.beginPath();ctx.ellipse(cx+o,310,58,96,0,0,Math.PI*2);ctx.stroke();});
+  // stem + leaf
+  ctx.fillStyle='#7A5B3F';rrect(ctx,cx-13,168,26,58,10);ctx.fill();
+  ctx.fillStyle='#9CA87B';ctx.beginPath();ctx.ellipse(cx+42,196,34,16,-0.5,0,Math.PI*2);ctx.fill();
+  // face
+  ctx.fillStyle='#5B3A26';
+  ctx.beginPath();ctx.arc(cx-44,300,13,0,Math.PI*2);ctx.fill();
+  ctx.beginPath();ctx.arc(cx+44,300,13,0,Math.PI*2);ctx.fill();
+  ctx.strokeStyle='#5B3A26';ctx.lineWidth=9;ctx.lineCap='round';
+  ctx.beginPath();ctx.arc(cx,322,30,0.25*Math.PI,0.75*Math.PI);ctx.stroke();
+  // blush
+  ctx.fillStyle='rgba(217,126,106,0.55)';
+  ctx.beginPath();ctx.ellipse(cx-72,326,15,10,0,0,Math.PI*2);ctx.fill();
+  ctx.beginPath();ctx.ellipse(cx+72,326,15,10,0,0,Math.PI*2);ctx.fill();
+  ctx.restore();
+  function sparkle(sx,sy,sz,col,alpha){ctx.save();ctx.globalAlpha=alpha;ctx.strokeStyle=col;ctx.lineWidth=5;ctx.lineCap='round';const d=sz/2;ctx.beginPath();ctx.moveTo(sx-d,sy-d);ctx.lineTo(sx+d,sy+d);ctx.stroke();ctx.beginPath();ctx.moveTo(sx+d,sy-d);ctx.lineTo(sx-d,sy+d);ctx.stroke();ctx.restore();}
+  sparkle(120,140,16,'#D9A441',0.9);sparkle(392,150,12,'#E08345',0.8);sparkle(360,410,14,'#D97E6A',0.7);
+  return c.toDataURL('image/png');
+}
+function setupPWA(){try{const u=buildIcon();document.getElementById('apple-touch-icon').href=u;document.getElementById('favicon').href=u;const m={name:'Her Glow Ritual — Soft Fall',short_name:'Her Glow',description:'Cozy full-week morning & night ritual timer',start_url:'.',display:'standalone',background_color:'#FBF3E6',theme_color:'#FBF3E6',orientation:'portrait',icons:[{src:u,sizes:'512x512',type:'image/png',purpose:'any maskable'}]};const b=new Blob([JSON.stringify(m)],{type:'application/manifest+json'});document.getElementById('pwa-manifest').href=URL.createObjectURL(b);}catch(e){console.warn('PWA:',e);}}
+
+// ─── Data ───────────────────────────────────────────────────────────────────
+const DAYS=[{id:'monday',l:'Mon',f:'Monday'},{id:'tuesday',l:'Tue',f:'Tuesday'},{id:'wednesday',l:'Wed',f:'Wednesday'},{id:'thursday',l:'Thu',f:'Thursday'},{id:'friday',l:'Fri',f:'Friday'},{id:'saturday',l:'Sat',f:'Saturday'},{id:'sunday',l:'Sun',f:'Sunday'}];
+const GYM_DAYS=['monday','wednesday','friday'];
+function S(n,p,d,dur=60,t=true){return{name:n,phase:p,detail:d,duration:dur,timed:t};}
+function M(n,p,d){return{name:n,phase:p,detail:d,duration:0,timed:false,mile:true};}
+
+// Morning body wash actually assigned per day (no more mystery wash)
+function washAM(day){
+  const map={monday:'Dove Sensitive',tuesday:'Aveeno',wednesday:'Dove Sensitive',thursday:'Aveeno',friday:'African Black Soap',saturday:'Aveeno',sunday:'Dove Sensitive'};
+  return map[day]||'a gentle daily wash';
+}
+
+// ═══════════ SHOWER SEQUENCE — face is washed + rinsed IN here ═══════════
+// Everything after the shower is bodycare first, then skincare — AM and PM.
+function showerSeq(time,day,mode){
+  const faceCleanser = time==='morning' ? 'LRP Gentle Cleanser' : (mode==='bare' ? 'Micellar Water / Quick Cleanse' : 'Naturium Niacinamide Jelly Cleanse');
+  if(mode==='bare'){
+    return [
+      S('Quick Warm Shower','🚿 Shower','Warm water, not hot. Wash your face with '+faceCleanser+' right here and rinse it off, then a quick rinse everywhere else.',150),
+      S('Step Out + Pat Dry','🚿 Shower','Pat everywhere — don\'t rub. Underarms bone dry before deodorant; damp application cuts effectiveness in half.',30),
+    ];
+  }
+  const s=[
+    S('Turn Water to Warm — Not Hot','🚿 Shower','Hot water strips your skin barrier. Step in, let the water wet your body completely, and take one slow breath before touching any product.',30),
+    S('Cleanse Face — Rinse Off Right Here','🚿 Shower','Wash your face with '+faceCleanser+' in the shower — gentle circular motions, then rinse clean. Rinse gently around piercings, never scrub the jewelry itself.',75),
+    S('Clip Hair Up','🚿 Shower','Hair secured and out of the way so nothing else touches it.',15),
+  ];
+  if(time==='morning'){
+    s.push(S('PanOxyl 10% BPO — Underarms','🚿 Shower','Apply to underarms now. It sits and works while you wash everything else.',30));
+  } else {
+    const intim=intimateNight(day);
+    s.push(S('Lume — Underarms + Intimate First','🚿 Shower',intim.base+'. It goes on first so it gets the longest contact time — let it sit 30–60 seconds while you move to the next step.',60));
+    if(mode==='full'&&day==='wednesday')s.push(S('Full Slay — Gentle Exfoliation, Outer Area Only','🚿 Shower','Korean exfoliation glove on outer thighs/bikini line only, while the Lume sits.',60));
+  }
+  const wash = time==='morning' ? washAM(day) : bodyNight(day).wash;
+  s.push(S('Body Wash — First Pass','🚿 Shower','Net sponge + '+wash+'. Lather up and work top to bottom — chest → stomach → arms → back → legs — so everything rinses down and off. Gentle on tattoos.',180));
+  if(time==='night'&&day==='thursday')s.push(S('Body Wash — Second Pass','🚿 Shower','Caress again, gentler this time, all over. It\'s double-cleanse night.',90));
+  s.push(S('Rinse Everything','🚿 Shower','Rinse the face-cleanser residue, the intimate area, and your full body. If your skin feels squeaky, that\'s clean.',60));
+  s.push(S('Wash Feet — Last','🚿 Shower','Lift each foot, wash between every toe. Floor runoff alone isn\'t enough.',30));
+  s.push(S('Back + Booty Check','🚿 Shower','Reach around and confirm — actually washed, not just rinsed. Between the cheeks too.',20));
+  s.push(S('Cool Water Rinse — 15 Seconds','🚿 Shower','Slightly cooler for the final rinse. Feels amazing and helps everything absorb better after.',15));
+  s.push(S('Step Out + Pat Dry','🚿 Shower','Pat everywhere — don\'t rub. Underarms need to be completely bone dry before deodorant; damp application cuts effectiveness in half.',45));
+  return s;
+}
+
+// ═══════════ MORNING SKINCARE (mode-only) — cleanser already done in shower ═══════════
+function skinAM(mode){
+  if(mode==='bare')return[
+    S('CeraVe Moisturizer','☀️ Skincare','Press into skin. Quick and cozy.',30),
+    S('Black Girl Sunscreen SPF 30','☀️ Skincare','Non-negotiable, even on a rush morning.',30),
+  ];
+  if(mode==='soft')return[
+    S('Niacinamide 10% + Zinc','☀️ Skincare','Press in, don\'t rub.',30),
+    S('Hyaluronic Acid 2% + B5','☀️ Skincare','On slightly damp skin — it drinks it up.',30),
+    S('CeraVe Moisturizer','☀️ Skincare','Warm between fingertips, press in.',30),
+    S('Black Girl Sunscreen SPF 30','☀️ Skincare','Two-finger rule — face, neck, ears.',30),
+  ];
+  return[
+    S('Rosewater Mist','☀️ Skincare','Mist and let it sit a beat before serums.',20),
+    S('Niacinamide 10% + Zinc','☀️ Skincare','Press in.',30),
+    S('Vitamin C Serum','☀️ Skincare','Thin layer, let it absorb fully.',30),
+    S('Hyaluronic Acid 2% + B5','☀️ Skincare','On damp skin.',30),
+    S('Caffeine Eye Serum','☀️ Skincare','Ring finger, tap around the orbital bone, never drag.',30),
+    S('Facial Roller','☀️ Skincare','A couple of passes to depuff before makeup/SPF.',60),
+    S('CeraVe Moisturizer','☀️ Skincare','Press in — face, neck, jawline.',30),
+    S('Black Girl Sunscreen SPF 30','☀️ Skincare','Two-finger rule. Glow protected.',30),
+  ];
+}
+
+// ═══════════ MORNING BODYCARE (mode-only) — right after the shower ═══════════
+function bodyAM(mode){
+  const soft=mode==='soft',full=mode==='full';
+  let s=[S('Confirm Dry — Bone-Dry Underarms','🧴 Bodycare','You patted dry in the shower — just double-check underarms are fully dry before anything goes on.',20)];
+  if(soft||full)s.push(
+    S('Witch Hazel Wipe — Pits + Behind Ears','🧴 Bodycare','Quick swipe. Part of the soft-girl-and-up layer.',30),
+    S('Studex Hypochlorous Spray','🧴 Bodycare','A light mist all over — it calms everything down.',20),
+  );
+  if(soft||full)s.push(S('EOS Vanilla Cashmere Body Oil','🧴 Bodycare','On damp skin, before the lotion. Smells like a hug.',45));
+  s.push(S('EOS Vanilla Cashmere Lotion','🧴 Bodycare','All over, nice and even.',60));
+  if(full)s.push(S('Johnson\'s Shea + Cocoa Oil Gel — Dry Spots','🧴 Bodycare','Targeted only, wherever feels dry today.',30));
+  s.push(S('Sunscreen — Exposed Areas','☀️ Bodycare','Arms, neck, anywhere the sun will find you.',45));
+  s.push(S('Deodorant','🧴 Bodycare','Secret Powder Fresh as lead, Lume as backup, Certain Dri on a heavy day.',30));
+  if(full)s.push(S('Fragrance Layering','💕 Scent','Vaseline on pulse points → perfume oil, dabbed not rubbed → mist last if you want it.',60));
+  return s;
+}
+
+// ═══════════ NIGHT — FIXED WEEKLY FACIAL TREATMENT ═══════════
+function facialTreat(day){
+  const map={
+    monday:{name:'Epiduo Night',emoji:'🧪',detail:'Adapalene 0.1% + Benzoyl Peroxide 2.5%. Pea-sized amount. Avoid eyes, nose corners, and lips.'},
+    tuesday:{name:'PDRN Pink Pad Recovery',emoji:'💗',detail:'Medicube PDRN Pink Pad — swipe gently, do not aggressively scrub.'},
+    wednesday:{name:'Epiduo Night',emoji:'🧪',detail:'Same as Monday — pea-sized, avoid eyes/nose/lips.'},
+    thursday:{name:'PDRN Pink Pad Recovery',emoji:'💗',detail:'Same as Tuesday — gentle recovery.'},
+    friday:{name:'Simple Recovery',emoji:'🌸',detail:'No treatment pad tonight — intentional recovery night.'},
+    saturday:{name:'Red Pad Night',emoji:'🔴',detail:'Medicube Red Pad — upward swipes, T-zone focus, 2–3 passes max, let it sit briefly.'},
+    sunday:{name:'Simple Recovery',emoji:'🌸',detail:'No treatment pad — gentle closing-of-the-week routine.'},
+  };
+  return map[day];
+}
+
+// ═══════════ NIGHT — FIXED WEEKLY BODYCARE ═══════════
+function bodyNight(day){
+  const map={
+    monday:{wash:'Dove Sensitive / African Black Soap',treatment:'AmLactin 12%',seal:'Palmer\'s Skin Therapy Oil',note:'',dry:300},
+    tuesday:{wash:'Aveeno',treatment:'Luciderm + glycerin',seal:'',note:'Full Slay may add Johnson\'s Shea + Cocoa Oil Gel.'},
+    wednesday:{wash:'SOMEBYMI AHA BHA PHA Wash',treatment:'SOMEBYMI Beta Pantheon Cream',seal:'',note:'Do NOT layer body oil over this system.'},
+    thursday:{wash:'Caress Double Cleanse',treatment:'',seal:'Palmer\'s Skin Therapy Oil + Palmer\'s Cocoa Butter',note:'Tattoo focus as appropriate.'},
+    friday:{wash:'Aveeno or Dove Light Wash',treatment:'AmLactin 12% — second weekly hit',seal:'Palmer\'s Skin Therapy Oil',note:'',dry:300},
+    saturday:{wash:'Aveeno or Caress',treatment:'Medicube Peel Shot — legs, arms, thighs, booty. Follow product instructions and rinse appropriately.',seal:'Palmer\'s Cocoa Butter',note:'Full Slay: post-trim Tend Skin reminder when relevant; monthly Moroccan hammam swap on the first Saturday.'},
+    sunday:{wash:'Gentle Wash — NO exfoliants',treatment:'',seal:'Eucerin or another rich cream + Palmer\'s Cocoa Butter on thighs/arms/booty',note:'Barrier-repair night.'},
+  };
+  return map[day];
+}
+
+// ═══════════ NIGHT — FIXED WEEKLY INTIMATE CARE ═══════════
+function intimateNight(day){
+  const map={
+    monday:{base:'Lume Acidified Wash, external only',extra:'Moisturize if needed',extraFullOnly:false},
+    tuesday:{base:'Lume Acidified Wash, external only',extra:'Moisturize if wanted',extraFullOnly:false},
+    wednesday:{base:'Lume Acidified Wash, external only',extra:'Gentle exfoliation, outer thighs/bikini line only — Korean glove, then jojoba oil after',extraFullOnly:true},
+    thursday:{base:'Lume Acidified Wash, external only',extra:'Tranexamic acid, outer pubic area only — never right after shaving',extraFullOnly:true},
+    friday:{base:'Lume Acidified Wash, external only',extra:'Moisturize if needed',extraFullOnly:false},
+    saturday:{base:'Lume Acidified Wash, external only',extra:'Full moisture + tranexamic acid (outer area only)',extraFullOnly:true},
+    sunday:{base:'Lume Acidified Wash, external only',extra:'Rest — no actives',extraFullOnly:false},
+  };
+  return map[day];
+}
+
+// ═══════════ NIGHT WIND-DOWN (mode) ═══════════
+function windDown(mode){
+  if(mode==='bare'){const s=S('Lights Out','💕 Wind-Down','"Rest. You still showed up today."',30,false);return[s];}
+  if(mode==='soft'){const s=S('Quiet Wind-Down','💕 Wind-Down','About 10 minutes of quiet. Gratitude, cozy blankets. Tap “breathe with me” below if you want a guided minute first. Lights out.',600);s.br=true;return[s];}
+  const a=S('Hobby Time','💕 Wind-Down','Reading / journaling / crochet / guitar — whatever\'s calling tonight. There\'s a “breathe with me” minute here too if you want it.',900);a.br=true;
+  return[a,S('Gratitude + Tomorrow\'s Intention','💕 Wind-Down','Name one thing you\'re grateful for and one intention for tomorrow. Lights out.',120)];
+}
+
+// ═══════════ NIGHT COMPOSER — shower (incl. face + intimate + body wash) → bodycare → skincare ═══════════
+function nightSteps(day,mode){
+  const f=facialTreat(day),b=bodyNight(day),intim=intimateNight(day);
+  let s=[...showerSeq('night',day,mode)];
+  if(mode==='bare'){
+    s.push(S('Essential Bodycare — Basic Seal','🧴 Bodycare','Skip the active treatment tonight — light layer of whatever seal is on hand.',60));
+    s.push(S('Basic Foot Care','🦶🏽 Feet','Cream on heels, socks on. Done.',60));
+    s.push(S(f.emoji+' '+f.name+' — If Manageable','🌙 Skincare',f.detail+' Optional tonight — skip if you\'re out of gas.',60,false));
+    s.push(S('Cicaplast B5','🌙 Skincare','A comforting layer to end on.',30));
+    s.push(S('Lip Balm','🌙 Skincare','',15));
+  } else {
+    if(b.treatment)s.push(S('Treatment — '+b.treatment,'🧴 Bodycare',b.note||'Apply evenly, then give it time to sink in.',120));
+    let footDone=false;
+    if(b.dry){
+      s.push(S('While It Dries — Do Foot Care Now','🦶🏽 Feet','The '+b.treatment.split(' — ')[0]+' needs '+(b.dry/60)+' minutes to dry before you seal it. Use this window instead of standing around: AmLactin/urea on heels, CeraVe or Eucerin all over, Aquaphor to seal, cotton socks. When the timer ends, come back and seal.',b.dry));
+      footDone=true;
+    }
+    if(b.seal)s.push(S('Seal — '+b.seal,'🧴 Bodycare',(b.dry?'Now that the treatment has dried, lock it in. ':'')+(b.note&&!b.treatment?b.note:'Lock in all that goodness.'),60));
+    if(mode==='full'&&day==='tuesday')s.push(S('Full Slay Add — Johnson\'s Shea + Cocoa Oil Gel','🧴 Bodycare','Tuesday\'s extra layer of cozy.',30));
+    if(mode==='full'&&day==='saturday')s.push(S('Full Slay Reminder','🧴 Bodycare',b.note,20,false));
+    if(mode==='full'&&intim.extraFullOnly&&day!=='wednesday')s.push(S('Full Slay Extra — '+intim.extra,'🌸 Intimate','Outer area only, be gentle.',90));
+    else if(!intim.extraFullOnly)s.push(S(intim.extra,'🌸 Intimate','',60,false));
+    if(!footDone){
+      if(mode==='full'&&day==='saturday')s.push(S('Saturday Foot Ritual — Soak + Pumice','🦶🏽 Feet','Epsom soak, gentle pumice, then AmLactin/urea on heels, CeraVe or Eucerin all over, Aquaphor to seal, cotton socks. The full foot night of the week.',600));
+      else s.push(S('Foot Care — Cream + Seal + Socks','🦶🏽 Feet','AmLactin/urea on heels, CeraVe or Eucerin all over, Aquaphor to seal, cotton socks.',90));
+    }
+    if(mode==='full'&&!footDone&&day!=='saturday')s.push(S('Full Slay Feet Extra — Body Oil + Cuticle Oil','🦶🏽 Feet','Quick pass on top of the basics.',60,false));
+    s.push(S('Thayers Milky Toner','🌙 Skincare','Pat in gently.',30));
+    s.push(S(f.emoji+' '+f.name,'🌙 Skincare',f.detail,90));
+    s.push(S('Cicaplast B5','🌙 Skincare','A comforting layer to end on.',30));
+    s.push(S('Lip Balm','🌙 Skincare','',15));
+    s.push(S('Lash Serum — If Scheduled','🌙 Skincare','Only if it\'s in rotation tonight.',20,false));
+  }
+  s.push(...windDown(mode));
+  return s;
+}
+
+// ═══════════ MORNING COMPOSER — per day ═══════════
+function chillMorning(mode,day,label){
+  return [
+    M('Wake — Bathroom, Water, Hygiene','🌅 Rise',label),
+    ...showerSeq('morning',day,mode),
+    ...bodyAM(mode),
+    ...skinAM(mode),
+    S('Breakfast','🍽️ Nourish','Something warm and cozy to start the day.',600),
+    S('Get Dressed','👗 Out the Door','Soft layers for a soft day.',300),
+  ];
+}
+
+function morningSteps(day,mode,lab){
+  if(day==='monday'){
+    return [
+      M('4:00 AM — Wake + Activate','🌅 Rise','Bathroom, water. No snoozing — the whole morning depends on this.'),
+      S('Pre-Gym Fuel','🍌 Fuel','Banana + small protein shake.',300),
+      S('Get Dressed for Gym','👟 Prep','Lay it out the night before — future you says thanks.',180),
+      S('Gather Gym + School Bags','🎒 Prep','Double-check: towel, water, headphones.',120),
+      S('Slow Coffee + Wake Up Properly','☕ Slow Start','Sip something warm and let your body actually wake up. No rushing this part — you\'ve got time built in.',900),
+      M('4:35 AM — Leave Home','🚗 Transit','Drive to the gym.'),
+      M('4:50 AM — Arrive at Gym','💪 Gym','Gym opens at 5:00 — use the wait to breathe and stretch.'),
+      S('Lower-Body Workout','💪 Gym','5:00–5:45ish, progressive overload. You\'re doing amazing.',2700),
+      M('Drive Home','🚗 Transit','Cool-down playlist on.'),
+      ...showerSeq('morning',day,mode),
+      ...bodyAM(mode),
+      ...skinAM(mode),
+      S('Get Dressed','👗 Out the Door','',300),
+      S('Breakfast','🍽️ Nourish','Real food — you trained this morning, refuel properly.',480),
+      S('Pack + Check School Items','🎒 Prep','',180),
+      M('Final Departure Check','✅ Check','Keys, phone, wallet, water, headphones.'),
+      M('🚨 6:45 AM — LEAVE HOUSE FOR TRAIN','🚉 Deadline','Hard deadline. Station is ~30 min away — this means leaving HOME, not arriving at the station.'),
+    ];
+  }
+  if(day==='tuesday'){
+    if(lab){
+      return [
+        M('Early Wake — Hygiene','🌅 Rise','Earlier start today for lab. Bathroom, water, wake up gently.'),
+        ...showerSeq('morning',day,mode),
+        ...bodyAM(mode),
+        ...skinAM(mode),
+        S('Get Dressed','👗 Out the Door','Lab-day layers — comfortable and cute.',240),
+        S('Breakfast / Prepared Food','🍽️ Nourish','Eat something real before lab.',300),
+        M('School / Lab Bag Check','🎒 Prep','Lab coat, notebook, everything you need.'),
+        M('🚨 5:30 AM Target — Leave House (5:45 absolute latest)','🧪 Deadline','Lab-day hard deadline.'),
+      ];
+    }
+    return chillMorning(mode,day,'Normal, relaxed Tuesday — no forced 4 AM schedule.');
+  }
+  if(day==='wednesday'){
+    return [
+      M('4:20 AM — Wake','🌅 Rise','Bathroom, water, quick fuel — banana + protein shake.'),
+      S('Get Dressed + Grab Gym & School Bags','👟 Prep','Train-day layers laid out last night, so this is grab-and-go.',180),
+      M('4:40 AM — Leave Home','🚗 Transit',''),
+      M('~4:50 AM — Arrive at Gym','💪 Gym','Gym opens at 5:00 — use the wait to stretch.'),
+      S('5:00–5:30 Efficient Lower-Body Workout','💪 Gym','Keep it efficient — the whole morning protects the station deadline.',1800),
+      S('5:30–5:45 Gym Shower','🚿 Shower','Warm not hot, quick wash. Face cleanser goes on and rinses off right here too. Pat dry — bone dry underarms before anything else.',900),
+      S('5:45–5:50 Bodycare + Skincare — Efficient','☀️ Skincare','Lotion + deodorant first, then whichever skincare mode you\'ve picked. Keep it brisk — this window is tight by design.',300),
+      S('Get Dressed at Gym','👗 Prep','Train-day outfit — comfortable but cute.',180),
+      S('Hair, Deodorant + Final Check','✅ Check','Bags grabbed, quick mirror check, water filled.',120),
+      M('~5:50 AM — Leave Gym','🚗 Transit','Straight to the station — not home.'),
+      M('🚨 ~6:10 AM — Arrive at Train Station (absolute latest)','🚉 Deadline','Straight from the gym to the station — not home.'),
+    ];
+  }
+  if(day==='thursday'){
+    let s=chillMorning(mode,day,'Chill morning — no gym deadline, no unnecessary 4 AM wake-up.');
+    if(mode==='full')s.push(S('Optional — Reading / Guitar / Crochet / Journaling / Music','🌿 Slow Morning','Peaceful, not optimized to death. Just enjoy it.',900,false));
+    if(mode==='soft')s.push(S('Optional — A Little Slow Time','🌿 Slow Morning','A few unhurried minutes, just for you.',300,false));
+    return s;
+  }
+  if(day==='friday'){
+    return [
+      M('~4:00 AM — Wake','🌅 Rise','Bathroom, water — same early start as Monday. You know this rhythm.'),
+      S('Pre-Gym Fuel + Get Ready','🍌 Fuel','Banana + protein shake, then gym clothes and bags.',300),
+      M('Leave Home','🚗 Transit',''),
+      M('Arrive at Gym Before 5:00 Opening','💪 Gym','Use the wait to stretch.'),
+      S('Workout','💪 Gym','5:00–5:45ish — finish strong, it\'s Friday.',2700),
+      M('Drive Home','🚗 Transit','Weekend energy loading…'),
+      ...showerSeq('morning',day,mode),
+      ...bodyAM(mode),
+      ...skinAM(mode),
+      S('Get Dressed','👗 Out the Door','',300),
+      S('Breakfast','🍽️ Nourish','',480),
+      S('🌿 Chill Buffer — Guitar / Reading / Crochet / Journaling / Coffee','🌿 Buffer','No train pressure today — this buffer is intentional, protect it.',mode==='full'?1800:mode==='soft'?900:300,mode!=='bare'),
+    ];
+  }
+  if(day==='saturday'){
+    let s=chillMorning(mode,day,'Chill morning — no forced gym schedule.');
+    if(mode!=='bare')s.push(S('Optional — Hobbies / Relaxing / Errands / Work Prep','🌿 Slow Morning','Soft, leisurely, realistic.',mode==='full'?900:300,false));
+    return s;
+  }
+  // sunday
+  let s=chillMorning(mode,day,'Soft reset morning.');
+  let reset=[S('Check Calendar','📋 Weekly Reset','Ease into the week ahead.',60,false)];
+  if(mode!=='bare')reset.push(S('Review School Schedule + Assignments','📋 Weekly Reset','Know what\'s coming so nothing surprises you.',180,false),S('Check Work Schedule + Confirm Gym Days','📋 Weekly Reset','',120,false));
+  if(mode==='full')reset.push(S('Prep School/Clinical Materials + Outfit Planning','📋 Weekly Reset','Future-you will be so grateful.',300,false),S('Light Room Reset','📋 Weekly Reset','Tidy space, tidy mind.',300,false));
+  s.push(...reset);
+  return s;
+}
+
+function getSteps(day,time,mode,lab){
+  return time==='morning'?morningSteps(day,mode,lab):nightSteps(day,mode);
+}
+// ─── Mascot ─────────────────────────────────────────────────────────────────
+function pumpkinFace(mood){
+  const ink='#5B3A26';
+  const blush=`<ellipse cx="31" cy="60" rx="5.5" ry="3.6" fill="#D97E6A" opacity="0.55"/><ellipse cx="69" cy="60" rx="5.5" ry="3.6" fill="#D97E6A" opacity="0.55"/>`;
+  if(mood==='sleepy')return `
+    <path d="M32 52 q6 5 12 0" stroke="${ink}" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <path d="M56 52 q6 5 12 0" stroke="${ink}" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <circle cx="50" cy="63" r="2.6" fill="${ink}"/>${blush}
+    <text x="74" y="36" font-size="13" fill="${ink}" opacity="0.7">z</text>
+    <text x="82" y="26" font-size="9" fill="${ink}" opacity="0.5">z</text>`;
+  if(mood==='strong')return `
+    <path d="M33 48 l9 4 l-9 4" stroke="${ink}" stroke-width="3.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M67 48 l-9 4 l9 4" stroke="${ink}" stroke-width="3.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M42 63 h16" stroke="${ink}" stroke-width="3.2" stroke-linecap="round"/>${blush}`;
+  if(mood==='sparkle'){
+    const star=(cx,cy,r)=>`M${cx} ${cy-r} Q${cx+r*0.16} ${cy-r*0.16} ${cx+r} ${cy} Q${cx+r*0.16} ${cy+r*0.16} ${cx} ${cy+r} Q${cx-r*0.16} ${cy+r*0.16} ${cx-r} ${cy} Q${cx-r*0.16} ${cy-r*0.16} ${cx} ${cy-r} Z`;
+    return `<path d="${star(38,52,7)}" fill="${ink}"/><path d="${star(62,52,7)}" fill="${ink}"/>
+    <path d="M41 59 Q50 69 59 59" stroke="${ink}" stroke-width="3" fill="none" stroke-linecap="round"/>${blush}`;
+  }
+  return `<circle cx="38" cy="52" r="4.2" fill="${ink}"/><circle cx="62" cy="52" r="4.2" fill="${ink}"/>
+    <path d="M41 60 Q50 68 59 60" stroke="${ink}" stroke-width="3" fill="none" stroke-linecap="round"/>${blush}`;
+}
+function pumpkinSVG(mood,size){
+  return `<svg width="${size}" height="${size}" viewBox="0 0 100 100">
+    <ellipse cx="50" cy="60" rx="33" ry="27" fill="#EE9859"/>
+    <ellipse cx="50" cy="60" rx="19" ry="27" fill="#E08345" opacity="0.55"/>
+    <ellipse cx="50" cy="60" rx="33" ry="27" fill="none" stroke="#C96F33" stroke-width="2.5" opacity="0.45"/>
+    <rect x="46" y="18" width="8" height="16" rx="4" fill="#7A5B3F"/>
+    <path d="M54 26 q14 -10 22 -4 q-6 10 -22 4" fill="#9CA87B"/>
+    ${pumpkinFace(mood)}</svg>`;
+}
+function moodFor(phase){
+  if(phase.indexOf('Wind-Down')>-1)return 'sleepy';
+  if(phase.indexOf('Gym')>-1)return 'strong';
+  if(['Skincare','Bodycare','Intimate','Feet','Shower'].some(p=>phase.indexOf(p)>-1))return 'sparkle';
+  return 'happy';
+}
+
+// ─── Affirmations ───────────────────────────────────────────────────────────
+const AFFIRM={
+  monday:'new week, same glow — you\'ve got this, pretty 🍂',
+  tuesday:'slow progress is still progress 🤍',
+  wednesday:'halfway there — stay cozy, stay kind 🍁',
+  thursday:'almost the weekend — be gentle with yourself 🌾',
+  friday:'you made it — celebrate the small wins ✨',
+  saturday:'rest is productive too 🛋️',
+  sunday:'reset, refresh, realign 🤍'
+};
+function setAffirm(){document.getElementById('affirmLine').textContent=AFFIRM[cDay]||'cozy mornings & nights · three ways to glow';}
+
+// ─── Storage helpers ────────────────────────────────────────────────────────
+function lsGet(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v);}catch(e){return d;}}
+function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+let patch=lsGet('gr5_patch',{});
+let soundOn=lsGet('gr5_sound',true);
+function dayKey(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function plantPatch(mood){const k=dayKey(new Date());if(!patch[k])patch[k]={};patch[k][cTime==='morning'?'m':'n']=mood||'cozy';lsSet('gr5_patch',patch);}
+function weekStart(){const d=new Date();const day=(d.getDay()+6)%7;d.setDate(d.getDate()-day);d.setHours(0,0,0,0);return d;}
+
+// ─── Pumpkin patch ──────────────────────────────────────────────────────────
+function openPatch(){
+  const ws=weekStart(),grid=document.getElementById('patchGrid'),todayK=dayKey(new Date());
+  let html='';
+  DAYS.forEach((d,i)=>{
+    const dt=new Date(ws);dt.setDate(ws.getDate()+i);const k=dayKey(dt);const rec=patch[k]||{};const isToday=k===todayK;
+    html+='<div class="pday"><div class="pday-l">'+d.l+'</div>'
+      +'<div class="pslot '+(rec.m?'got':'')+(isToday?' today':'')+'">'+(rec.m?'🎃':'')+'</div>'
+      +'<div class="pslot '+(rec.n?'got':'')+(isToday?' today':'')+'">'+(rec.n?'🎃':'')+'</div></div>';
+  });
+  grid.innerHTML=html;
+  let total=0;Object.keys(patch).forEach(k=>{const r=patch[k];if(r.m)total++;if(r.n)total++;});
+  let week=0;for(let i=0;i<7;i++){const dt=new Date(ws);dt.setDate(ws.getDate()+i);const r=patch[dayKey(dt)]||{};if(r.m)week++;if(r.n)week++;}
+  let streak=0;const cur=new Date();
+  const hasAny=k=>{const r=patch[k];return r&&(r.m||r.n);};
+  if(!hasAny(dayKey(cur)))cur.setDate(cur.getDate()-1);
+  while(hasAny(dayKey(cur))){streak++;cur.setDate(cur.getDate()-1);}
+  document.getElementById('ps-total').textContent=total;
+  document.getElementById('ps-streak').textContent=streak;
+  document.getElementById('ps-week').textContent=week+'/14';
+  document.getElementById('patchOv').classList.add('vis');
+}
+function closePatch(){document.getElementById('patchOv').classList.remove('vis');}
+
+// ─── Sounds ─────────────────────────────────────────────────────────────────
+function togSound(){soundOn=!soundOn;lsSet('gr5_sound',soundOn);const b=document.getElementById('soundBtn');b.classList.toggle('off',!soundOn);b.textContent=soundOn?'🔔':'🔕';if(soundOn)chime();}
+function chime(){
+  if(!soundOn)return;
+  try{
+    const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;
+    const ctx=new AC();const t=ctx.currentTime;
+    [[523.25,0],[783.99,0.3]].forEach(function(pair){
+      const f=pair[0],dt=pair[1];
+      const o=ctx.createOscillator(),g=ctx.createGain();
+      o.type='sine';o.frequency.value=f;
+      g.gain.setValueAtTime(0.0001,t+dt);
+      g.gain.exponentialRampToValueAtTime(0.12,t+dt+0.08);
+      g.gain.exponentialRampToValueAtTime(0.0001,t+dt+1.1);
+      o.connect(g);g.connect(ctx.destination);o.start(t+dt);o.stop(t+dt+1.2);
+    });
+  }catch(e){}
+}
+
+// ─── Sparkles + confetti ────────────────────────────────────────────────────
+function sparkleBurst(container){
+  if(!container)return;
+  const bits=['✨','🍂','💛','🤍'];
+  for(let i=0;i<10;i++){
+    const sp=document.createElement('span');sp.className='sparkle';sp.textContent=bits[i%bits.length];
+    sp.style.left=(20+Math.random()*60)+'%';sp.style.top=(30+Math.random()*40)+'%';
+    sp.style.setProperty('--dx',(Math.random()*120-60)+'px');
+    sp.style.setProperty('--dy',(-40-Math.random()*70)+'px');
+    container.appendChild(sp);setTimeout(function(){sp.remove();},950);
+  }
+}
+function leafConfetti(container){
+  if(!container)return;
+  const bits=['🍂','🍁','✨','💛','🌸'];
+  for(let i=0;i<36;i++){
+    const c=document.createElement('div');c.className='confetti';c.textContent=bits[i%bits.length];
+    c.style.left=(Math.random()*100)+'%';c.style.fontSize=(12+Math.random()*14)+'px';
+    c.style.animationDuration=(2.2+Math.random()*2.2)+'s';
+    c.style.animationDelay=(Math.random()*0.9)+'s';
+    c.style.setProperty('--sway',(Math.random()*120-60)+'px');
+    c.style.setProperty('--spin',(Math.random()*720-360)+'deg');
+    container.appendChild(c);setTimeout(function(){c.remove();},5200);
+  }
+}
+
+// ─── Breathing minute ───────────────────────────────────────────────────────
+let brTimers=[],brWasRun=false;
+function openBreath(){
+  document.getElementById('breathOv').classList.add('vis');
+  brWasRun=isRun;isRun=false;brLoop();
+}
+function closeBreath(){
+  document.getElementById('breathOv').classList.remove('vis');
+  brTimers.forEach(clearTimeout);brTimers=[];
+  isRun=brWasRun;
+}
+function brLoop(){
+  const c=document.getElementById('brCircle'),t=document.getElementById('brTxt');
+  const seq=[['breathe in',1.45,4000],['hold',1.45,4000],['breathe out',1,4500]];
+  let i=0;
+  function step(){
+    const s=seq[i%3];
+    t.textContent=s[0];c.style.transform='scale('+s[1]+')';
+    brTimers.push(setTimeout(function(){i++;step();},s[2]));
+  }
+  step();
+}
+
+// ─── App state / rendering (timer engine) ───────────────────────────────────
+let cDay='monday',cTime='morning',cMode='soft',cLab=false;
+let aSteps=[],sIdx=0,sTotal=0,sLeft=0,isRun=false,tInt=null,sTime=null,tShift=0;
+
+function renderDayRow(){
+  document.getElementById('day-row').innerHTML=DAYS.map(function(d){
+    const gym=GYM_DAYS.includes(d.id)||(d.id==='tuesday'&&cLab);
+    return '<button class="day-pill '+(d.id===cDay?'active':'')+' '+(gym?'gym':'')+'" onclick="setDay(\''+d.id+'\')">'+d.l+'</button>';
+  }).join('');
+  document.getElementById('lab-row').classList.toggle('vis',cDay==='tuesday'&&cTime==='morning');
+}
+function setDay(d){cDay=d;renderDayRow();renderPrev();}
+function setTime(t){cTime=t;document.getElementById('tab-m').classList.toggle('active',t==='morning');document.getElementById('tab-n').classList.toggle('active',t==='night');renderDayRow();renderPrev();}
+function setMode(m){cMode=m;['soft','full','bare'].forEach(function(x){document.getElementById('mode-'+x).classList.toggle('active',x===m);});renderPrev();}
+function setLab(v){cLab=v;document.getElementById('lab-yes').classList.toggle('active',v);document.getElementById('lab-no').classList.toggle('active',!v);renderDayRow();renderPrev();}
+
+function renderPrev(){
+  const steps=getSteps(cDay,cTime,cMode,cLab);
+  const dur=steps.reduce(function(a,s){return a+s.duration;},0);
+  document.getElementById('sc-dur').textContent=Math.round(dur/60)+' min';
+  const dayF=DAYS.find(function(d){return d.id===cDay;}).f;
+  const modeLabel=cMode==='full'?'Full Slay':cMode==='soft'?'Soft Girl':'Bare Minimum';
+  document.getElementById('sc-type').textContent=dayF+' · '+(cTime==='morning'?'Morning':'Night')+' · '+modeLabel;
+  setAffirm();
+  const dl=document.getElementById('deadline-strip');
+  let dtext='';
+  if(cTime==='morning'){
+    if(cDay==='monday')dtext='🚨 Leave house by 6:45 AM';
+    else if(cDay==='wednesday')dtext='🚨 At the station by ~6:10 AM (absolute latest)';
+    else if(cDay==='tuesday'&&cLab)dtext='🚨 Leave house by 5:30 AM (5:45 absolute latest)';
+  }
+  if(dtext){dl.style.display='block';dl.textContent=dtext;}else{dl.style.display='none';}
+  let lastPhase='';
+  document.getElementById('preview').innerHTML=steps.map(function(s){
+    const dl2=s.duration>0?(s.duration>=60?Math.round(s.duration/60)+'m':s.duration+'s'):'';
+    let h='';
+    if(s.phase!==lastPhase){lastPhase=s.phase;h='<div class="ph"><div class="phl"></div><div class="phn">'+s.phase+'</div><div class="phl"></div></div>';}
+    return h+'<div class="srow '+(s.mile?'mile':'')+'"><div class="srchk">'+(s.mile?'★':'')+'</div><div class="src"><div class="srn">'+s.name+'</div><div class="srd">'+s.detail+'</div></div><div class="srdur">'+dl2+'</div></div>';
+  }).join('');
+}
+
+function fTimeFromNow(sec){const d=new Date(Date.now()+sec*1000);let h=d.getHours(),mi=d.getMinutes();const ap=h>=12?'PM':'AM';h=h%12||12;return h+':'+mi.toString().padStart(2,'0')+' '+ap;}
+function remSecs(){let t=0;for(let i=sIdx;i<aSteps.length;i++){t+=(i===sIdx?sLeft:aSteps[i].duration);}return Math.max(0,t+tShift);}
+function updFinish(){document.getElementById('av-ft').textContent=fTimeFromNow(remSecs());document.getElementById('av-rm').textContent=Math.ceil(remSecs()/60)+' min left';}
+function shiftTime(v){tShift+=v;updFinish();}
+
+function startR(){
+  aSteps=getSteps(cDay,cTime,cMode,cLab);sIdx=0;sTime=new Date();tShift=0;
+  const dayF=DAYS.find(function(d){return d.id===cDay;}).f;
+  const modeLabel=cMode==='full'?'Full Slay':cMode==='soft'?'Soft Girl':'Bare Minimum';
+  document.getElementById('av-meta').textContent=dayF+' · '+modeLabel;
+  document.getElementById('av-rn').textContent=(cTime==='morning'?'Morning':'Night')+' Ritual';
+  document.getElementById('av').classList.add('vis');
+  document.getElementById('dscr').classList.remove('vis');
+  document.querySelector('.aaw').style.display='';
+  renderAll();loadStep(0);
+}
+
+function loadStep(i){
+  if(i>=aSteps.length){finish();return;}
+  sIdx=i;
+  const step=aSteps[i];
+  const pct=(i/aSteps.length)*100;
+  document.getElementById('av-pf').style.width=pct+'%';
+  document.getElementById('av-sc').textContent='Step '+(i+1)+' of '+aSteps.length;
+  if(step.timed&&step.duration>0){startTick(step.duration);}
+  else{clearTick();sLeft=0;}
+  updFinish();renderCard(step);renderAll();
+}
+
+function renderCard(step){
+  const isTimed=step.timed&&step.duration>0;
+  const c=2*Math.PI*46;
+  const etaTxt=isTimed?'~ finishes '+fTimeFromNow(sLeft):'~ ritual ends '+fTimeFromNow(remSecs());
+  document.getElementById('ccw').innerHTML=
+    '<div class="cc fi" id="ccCard">'
+    +'<div class="cc-top"><div><div class="cc-ph">'+step.phase+(step.mile?' · milestone':'')+'</div>'
+    +'<div class="cc-nm">'+step.name+'</div></div>'
+    +'<div class="cc-mascot">'+pumpkinSVG(moodFor(step.phase),64)+'</div></div>'
+    +'<div class="cc-eta" id="cc-eta">'+etaTxt+'</div>'
+    +'<div class="cc-dt">'+step.detail+'</div>'
+    +(step.br?'<button class="brbtn" onclick="openBreath()">🍂 breathe with me — a guided minute</button>':'')
+    +(isTimed
+      ?'<div class="rw"><div class="rc pulse" id="rc"><svg width="108" height="108" viewBox="0 0 108 108"><defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E08345"/><stop offset="1" stop-color="#D9A441"/></linearGradient></defs><circle class="rbg" cx="54" cy="54" r="46"/><circle class="rfg" id="rfg" cx="54" cy="54" r="46" stroke="url(#rg)" stroke-dasharray="'+c+'" stroke-dashoffset="0"/></svg><div class="ri"><div class="rd" id="rd">'+fmt(step.duration)+'</div><div class="ru">left</div></div></div></div>'
+      :'<button class="mbdb" onclick="nxt()">✓ Done — Next Step</button>')
+    +'<div class="ccc"><button class="cb" onclick="prv()" '+(sIdx===0?'disabled':'')+'>← Back</button>'
+    +(isTimed?'<button class="cb pri" id="pb" onclick="togP()">⏸ Pause</button>':'<div></div>')
+    +'<button class="cb" onclick="nxt()">Skip →</button></div></div>';
+}
+
+function renderAll(){
+  document.getElementById('av-list').innerHTML=aSteps.map(function(s,i){
+    const dn=i<sIdx,cur=i===sIdx;
+    const dl=s.duration>0?(s.duration>=60?Math.round(s.duration/60)+'m':s.duration+'s'):'';
+    return '<div class="srow '+(s.mile?'mile':'')+' '+(dn?'done':'')+' '+(cur?'cur':'')+'"><div class="srchk">'+(dn?'✓':(s.mile?'★':''))+'</div><div class="src"><div class="srn">'+s.name+'</div><div class="srd">'+s.phase+'</div></div><div class="srdur">'+dl+'</div></div>';
+  }).join('');
+  const els=document.querySelectorAll('#av-list .srow');
+  if(els[sIdx])setTimeout(function(){els[sIdx].scrollIntoView({behavior:'smooth',block:'nearest'});},80);
+}
+
+function startTick(d){
+  clearTick();sTotal=d;sLeft=d;isRun=true;updRing();
+  tInt=setInterval(function(){
+    if(!isRun)return;
+    sLeft--;updRing();
+    if(sLeft<=0){clearTick();chime();if(navigator.vibrate)navigator.vibrate([200,100,200]);setTimeout(nxt,1200);}
+  },1000);
+}
+
+function updRing(){
+  const d=document.getElementById('rd'),fg=document.getElementById('rfg');
+  if(!d||!fg)return;
+  d.textContent=fmt(sLeft);
+  const c=2*Math.PI*46;
+  fg.style.strokeDashoffset=c*(1-sLeft/sTotal);
+  fg.classList.toggle('warn',sLeft<=15&&sLeft>0);
+  updFinish();
+  const eta=document.getElementById('cc-eta');
+  if(eta)eta.textContent='~ finishes '+fTimeFromNow(sLeft);
+}
+
+function clearTick(){if(tInt){clearInterval(tInt);tInt=null;}}
+function togP(){isRun=!isRun;const b=document.getElementById('pb');if(b)b.textContent=isRun?'⏸ Pause':'▶ Resume';}
+function nxt(){chime();clearTick();loadStep(sIdx+1);setTimeout(function(){sparkleBurst(document.getElementById('ccCard'));},60);}
+function prv(){if(sIdx===0)return;clearTick();loadStep(sIdx-1);}
+function fmt(s){const m=Math.floor(s/60),sc=s%60;return m>0?m+':'+sc.toString().padStart(2,'0'):'0:'+sc.toString().padStart(2,'0');}
+
+function moodMsg(m){
+  const gym=GYM_DAYS.includes(cDay)||(cDay==='tuesday'&&cLab);
+  const base=cTime==='morning'
+    ?(gym?'You trained and glowed — that\'s the whole vision board in one morning. ':'Morning ritual complete. You are that girl, every single day. ')
+    :'Night ritual done — skin, body, peace, all handled. ';
+  if(m==='loved')return base+'Feeling yourself? As you should. 🥰';
+  if(m==='sleepy')return base+'Off to dreamland you go. Rest well, pretty. 😴';
+  return base+'Soft, cozy, and so proud of you. 🤍';
+}
+
+function finish(){
+  clearTick();isRun=false;
+  document.getElementById('ccw').innerHTML='';
+  document.querySelector('.aaw').style.display='none';
+  document.getElementById('av-pf').style.width='100%';
+  plantPatch('cozy');
+  ['cozy','loved','sleepy'].forEach(function(x){document.getElementById('mood-'+x).classList.toggle('picked',x==='cozy');});
+  const now=new Date();let h=now.getHours(),mi=now.getMinutes();
+  const ap=h>=12?'PM':'AM';h=h%12||12;
+  const mins=Math.round((now-sTime)/60000);
+  document.getElementById('dsv1').textContent=h+':'+mi.toString().padStart(2,'0')+' '+ap;
+  document.getElementById('dsv2').textContent=mins;
+  document.getElementById('dsv3').textContent=aSteps.length;
+  const gym=GYM_DAYS.includes(cDay)||(cDay==='tuesday'&&cLab);
+  document.getElementById('de').textContent=cTime==='morning'?(gym?'💪':'☀️'):'🌙';
+  document.getElementById('dsb').textContent=moodMsg('cozy');
+  document.getElementById('dscr').classList.add('vis');
+  leafConfetti(document.getElementById('dscr'));
+  chime();
+}
+
+function setMood(m){
+  const k=dayKey(new Date());
+  if(patch[k]){patch[k][cTime==='morning'?'m':'n']=m;lsSet('gr5_patch',patch);}
+  ['cozy','loved','sleepy'].forEach(function(x){document.getElementById('mood-'+x).classList.toggle('picked',x===m);});
+  document.getElementById('dsb').textContent=moodMsg(m);
+  chime();
+}
+
+function exitR(){
+  clearTick();isRun=false;closeBreath();
+  document.getElementById('av').classList.remove('vis');
+  document.getElementById('dscr').classList.remove('vis');
+  document.querySelector('.aaw').style.display='';
+  renderPrev();
+}
+
+function openRem(){document.getElementById('remOv').classList.add('vis');}
+function closeRem(){document.getElementById('remOv').classList.remove('vis');}
+
+// ─── Fall leaves ────────────────────────────────────────────────────────────
+const LEAF_COLORS=['#E8A87C','#D9A441','#C96F33','#F0C9A8','#B08968'];
+function leafSVG(color,size){
+  return '<svg width="'+size+'" height="'+size+'" viewBox="0 0 24 24" fill="none"><path d="M12 2C7 6 4 10 4 14a8 8 0 0 0 16 0c0-4-3-8-8-12z" fill="'+color+'"/><path d="M12 3v17" stroke="'+color+'" stroke-opacity="0.35" stroke-width="1"/></svg>';
+}
+function spawnHeaderLeaves(){
+  const box=document.getElementById('hdrLeaves');if(!box)return;
+  const spots=[{l:'6%',t:'12px',r:-18,s:22},{l:'88%',t:'20px',r:24,s:18},{l:'14%',t:'70px',r:-10,s:14},{l:'80%',t:'78px',r:16,s:16}];
+  box.innerHTML=spots.map(function(p,i){return '<div style="position:absolute;left:'+p.l+';top:'+p.t+';transform:rotate('+p.r+'deg);opacity:.45;">'+leafSVG(LEAF_COLORS[i%LEAF_COLORS.length],p.s)+'</div>';}).join('');
+}
+function spawnFallingLeaves(){
+  const field=document.getElementById('leafField');if(!field)return;
+  let html='';
+  for(let i=0;i<11;i++){
+    const left=Math.random()*100;
+    const size=10+Math.random()*12;
+    const dur=12+Math.random()*10;
+    const delay=Math.random()*18;
+    const color=LEAF_COLORS[i%LEAF_COLORS.length];
+    html+='<div class="leaf" style="left:'+left+'%;animation-duration:'+dur+'s;animation-delay:-'+delay+'s;">'+leafSVG(color,size)+'</div>';
+  }
+  field.innerHTML=html;
+}
+
+function init(){
+  setupPWA();
+  document.getElementById('hdrMascot').innerHTML=pumpkinSVG('happy',84);
+  const sb=document.getElementById('soundBtn');sb.classList.toggle('off',!soundOn);sb.textContent=soundOn?'🔔':'🔕';
+  spawnHeaderLeaves();spawnFallingLeaves();renderDayRow();renderPrev();
+}
+init();
+</script>
+</body>
+</html>
