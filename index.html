@@ -208,6 +208,9 @@
   .br-circle span{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:20px;color:#fff;text-shadow:0 1px 6px rgba(120,60,20,.4);}
   .br-hint{font-size:12px;font-weight:700;color:var(--muted);margin-bottom:18px;}
 
+  .mode-note{padding:4px 22px 0;text-align:center;font-family:"Cormorant Garamond",serif;font-style:italic;font-size:14.5px;color:var(--ink-soft);line-height:1.55;}
+  .monthly-strip{margin:12px 16px 0;background:linear-gradient(135deg,#F1E9F7,#E4D5EE);border:2px solid #C9B3DD;border-radius:16px;padding:10px 14px;font-size:12px;font-weight:700;color:#6B4E8E;line-height:1.5;}
+  .rem-note{font-size:13px;font-weight:600;color:var(--ink-soft);line-height:1.7;margin-top:10px;}
   @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
   .fi{animation:fadeUp .3s ease both;}
 </style>
@@ -241,7 +244,9 @@
     <button class="mbtn" id="mode-full" onclick="setMode('full')"><span class="mi">👑</span>Full Slay</button>
     <button class="mbtn" id="mode-bare" onclick="setMode('bare')"><span class="mi">🕯️</span>Bare Min</button>
   </div>
+  <div class="mode-note">Soft Girl is your everyday default — already a complete routine. Full Slay is a treat for when you have time. Bare Min is a safety net, never a failure.</div>
   <div class="deadline-strip" id="deadline-strip" style="display:none;"></div>
+  <div class="monthly-strip" id="monthly-strip" style="display:none;"></div>
   <div class="sum-card">
     <div>
       <div class="sc-lbl">✨ Today's Ritual ✨</div>
@@ -316,6 +321,7 @@
         <ul>
           <li><strong>Baby Foot Peel</strong> — once a month. Booties on for an hour, seal with socks, peeling starts in 3–5 days. Plan it for a week you're mostly home. Pairs with a Sunday soft-reset night.</li>
           <li><strong>Moroccan Hammam Swap</strong> — first Saturday of the month, in place of the regular deep-clean night.</li>
+          <li><strong>Red Pad Night</strong> — once a month, on the first Saturday: swap the Paula's Choice BHA toner for the Medicube Red Pad (upward swipes, T-zone focus, 2–3 passes max).</li>
         </ul>
       </div>
       <div class="rem-sec">
@@ -335,11 +341,41 @@
       <div class="rem-sec">
         <h3>Scent System (when fragrance is appropriate)</h3>
         <ol>
-          <li>Vaseline on pulse points — wrists, inner elbows, behind ears, throat, chest, behind knees</li>
-          <li>Perfume oil on top — dab, never rub</li>
-          <li>Body mist last, optional</li>
+          <li>Vaseline on pulse points — wrists, inner elbows, behind ears, throat, chest, behind knees. Neutral and occlusive — traps fragrance instead of letting it evaporate within the hour.</li>
+          <li>Perfume oil on top — dab, never rub (rubbing breaks the scent molecules apart and fades it faster)</li>
+          <li>Body mist last, optional — your top note riding over the oil's base note</li>
           <li>Scented powder once skin is fully dry — light dust on friction zones only (underboob, inner thighs, between cheeks)</li>
         </ol>
+        <p class="rem-note">Perfume oil menu: <strong>Sand + Fog Vanilla Sands</strong> (everyday default), <strong>Vanilla Musk</strong> (evenings), <strong>Strawberry Spritz</strong> (daytime), <strong>Choco Musk</strong> (rich/gourmand), the <strong>Lebanese oil</strong> (your wildcard), <strong>Forvr Mood She Was Here</strong> (special occasions, running low), BBW Warm Vanilla Sugar mist (top layer only, not a pulse-point oil).</p>
+      </div>
+      <div class="rem-sec">
+        <h3>Intimate Care — Golden Rules</h3>
+        <ul>
+          <li>Vulva = external, vagina = internal. External skin gets hygiene and care. The internal environment cleans itself — no douching, no internal cleansing, ever.</li>
+          <li>No vaginal deodorant, no perfume inside, no scented products on sensitive tissue. Normal, natural scent is healthy scent.</li>
+          <li>Lume, external only, is the whole cleansing routine — no regular soap, no fragrance, no complicated steps.</li>
+          <li>This isn't meant to be a project. Clean, comfortable, fresh, healthy — that's the whole bar.</li>
+          <li>Post-shave rule: never tranexamic acid or exfoliate right after shaving. Wait 24 hours — shave day is Lume + moisturizer only.</li>
+        </ul>
+      </div>
+      <div class="rem-sec">
+        <h3>Before You Buy — 5 Questions</h3>
+        <ol>
+          <li>Do I already own something that does this job?</li>
+          <li>Does the new one perform meaningfully better, not just prettier?</li>
+          <li>Will I actually use it, realistically?</li>
+          <li>Is it worth the extra cost over what I have?</li>
+          <li>Am I buying it because it works — or because it's cute?</li>
+        </ol>
+      </div>
+      <div class="rem-sec">
+        <h3>What to Expect — Realistic Timeline</h3>
+        <ul>
+          <li><strong>Week 1–2:</strong> Heels + skin already feel different post-shower. Barrier strengthening, lash serums depositing at the follicle — you feel the work before anyone sees it.</li>
+          <li><strong>Month 1–2:</strong> Texture visibly smoother, tone evening out, scent system fully calibrated. People start saying "you look good lately" with no explanation why.</li>
+          <li><strong>Month 3–4:</strong> Lash length undeniable, hyperpigmentation faded, even tone everywhere, intimate area fully compounded.</li>
+          <li><strong>Month 6+:</strong> Full transformation — skin, lashes, body all compounded. Bare face mogs.</li>
+        </ul>
       </div>
     </div>
   </div>
@@ -425,30 +461,30 @@ function showerSeq(time,day,mode){
   const faceCleanser = time==='morning' ? 'LRP Gentle Cleanser' : (mode==='bare' ? 'Micellar Water / Quick Cleanse' : 'Naturium Niacinamide Jelly Cleanse');
   if(mode==='bare'){
     return [
-      S('Quick Warm Shower','🚿 Shower','Warm water, not hot. Wash your face with '+faceCleanser+' right here and rinse it off, then a quick rinse everywhere else.',150),
-      S('Step Out + Pat Dry','🚿 Shower','Pat everywhere — don\'t rub. Underarms bone dry before deodorant; damp application cuts effectiveness in half.',30),
+      S('Quick Warm Shower','🚿 Bathroom','Warm water, not hot. Wash your face with '+faceCleanser+' right here and rinse it off, then a quick rinse everywhere else.',150),
+      S('Step Out + Pat Dry','🚿 Bathroom','Pat everywhere — don\'t rub. Underarms bone dry before deodorant; damp application cuts effectiveness in half.',30),
     ];
   }
   const s=[
-    S('Turn Water to Warm — Not Hot','🚿 Shower','Hot water strips your skin barrier. Step in, let the water wet your body completely, and take one slow breath before touching any product.',30),
-    S('Cleanse Face — Rinse Off Right Here','🚿 Shower','Wash your face with '+faceCleanser+' in the shower — gentle circular motions, then rinse clean. Rinse gently around piercings, never scrub the jewelry itself.',75),
-    S('Clip Hair Up','🚿 Shower','Hair secured and out of the way so nothing else touches it.',15),
+    S('Turn Water to Warm — Not Hot','🚿 Bathroom','Hot water strips your skin barrier. Step in, let the water wet your body completely, and take one slow breath before touching any product.',30),
+    S('Cleanse Face — Rinse Off Right Here','🚿 Bathroom','Wash your face with '+faceCleanser+' in the shower — gentle circular motions, then rinse clean. Rinse gently around piercings, never scrub the jewelry itself.',75),
+    S('Clip Hair Up','🚿 Bathroom','Hair secured and out of the way so nothing else touches it.',15),
   ];
   if(time==='morning'){
-    s.push(S('PanOxyl 10% BPO — Underarms','🚿 Shower','Apply to underarms now. It sits and works while you wash everything else.',30));
+    s.push(S('PanOxyl 10% BPO — Underarms','🚿 Bathroom','Apply to underarms now. It sits and works while you wash everything else.',30));
   } else {
     const intim=intimateNight(day);
-    s.push(S('Lume — Underarms + Intimate First','🚿 Shower',intim.base+'. It goes on first so it gets the longest contact time — let it sit 30–60 seconds while you move to the next step.',60));
-    if(mode==='full'&&day==='wednesday')s.push(S('Full Slay — Gentle Exfoliation, Outer Area Only','🚿 Shower','Korean exfoliation glove on outer thighs/bikini line only, while the Lume sits.',60));
+    s.push(S('Lume — Underarms + Intimate First','🚿 Bathroom',intim.base+'. It goes on first so it gets the longest contact time — let it sit 30–60 seconds while you move to the next step.',60));
+    if(mode==='full'&&day==='wednesday')s.push(S('Full Slay — Gentle Exfoliation, Outer Area Only','🚿 Bathroom','Korean exfoliation glove on outer thighs/bikini line only, while the Lume sits.',60));
   }
   const wash = time==='morning' ? washAM(day) : bodyNight(day).wash;
-  s.push(S('Body Wash — First Pass','🚿 Shower','Net sponge + '+wash+'. Lather up and work top to bottom — chest → stomach → arms → back → legs — so everything rinses down and off. Gentle on tattoos.',180));
-  if(time==='night'&&day==='thursday')s.push(S('Body Wash — Second Pass','🚿 Shower','Caress again, gentler this time, all over. It\'s double-cleanse night.',90));
-  s.push(S('Rinse Everything','🚿 Shower','Rinse the face-cleanser residue, the intimate area, and your full body. If your skin feels squeaky, that\'s clean.',60));
-  s.push(S('Wash Feet — Last','🚿 Shower','Lift each foot, wash between every toe. Floor runoff alone isn\'t enough.',30));
-  s.push(S('Back + Booty Check','🚿 Shower','Reach around and confirm — actually washed, not just rinsed. Between the cheeks too.',20));
-  s.push(S('Cool Water Rinse — 15 Seconds','🚿 Shower','Slightly cooler for the final rinse. Feels amazing and helps everything absorb better after.',15));
-  s.push(S('Step Out + Pat Dry','🚿 Shower','Pat everywhere — don\'t rub. Underarms need to be completely bone dry before deodorant; damp application cuts effectiveness in half.',45));
+  s.push(S('Body Wash — First Pass','🚿 Bathroom','Net sponge + '+wash+'. Lather up and work top to bottom — chest → stomach → arms → back → legs — so everything rinses down and off. Gentle on tattoos.',180));
+  if(time==='night'&&day==='thursday')s.push(S('Body Wash — Second Pass','🚿 Bathroom','Caress again, gentler this time, all over. It\'s double-cleanse night.',90));
+  s.push(S('Rinse Everything','🚿 Bathroom','Rinse the face-cleanser residue, the intimate area, and your full body. If your skin feels squeaky, that\'s clean.',60));
+  s.push(S('Wash Feet — Last','🚿 Bathroom','Lift each foot, wash between every toe. Floor runoff alone isn\'t enough.',30));
+  s.push(S('Back + Booty Check','🚿 Bathroom','Reach around and confirm — actually washed, not just rinsed. Between the cheeks too.',20));
+  s.push(S('Cool Water Rinse — 15 Seconds','🚿 Bathroom','Slightly cooler for the final rinse. Feels amazing and helps everything absorb better after.',15));
+  s.push(S('Step Out + Pat Dry','🚿 Bathroom','Pat everywhere — don\'t rub. Underarms need to be completely bone dry before deodorant; damp application cuts effectiveness in half.',45));
   return s;
 }
 
@@ -461,7 +497,7 @@ function skinAM(mode){
   if(mode==='soft')return[
     S('Niacinamide 10% + Zinc','☀️ Skincare','Press in, don\'t rub.',30),
     S('Hyaluronic Acid 2% + B5','☀️ Skincare','On slightly damp skin — it drinks it up.',30),
-    S('CeraVe Moisturizer','☀️ Skincare','Warm between fingertips, press in.',30),
+    S('CeraVe Moisturizer','☀️ Skincare','Warm between fingertips, press in. Your everyday reliable moisturizer — easy to restock.',30),
     S('Black Girl Sunscreen SPF 30','☀️ Skincare','Two-finger rule — face, neck, ears.',30),
   ];
   return[
@@ -471,7 +507,7 @@ function skinAM(mode){
     S('Hyaluronic Acid 2% + B5','☀️ Skincare','On damp skin.',30),
     S('Caffeine Eye Serum','☀️ Skincare','Ring finger, tap around the orbital bone, never drag.',30),
     S('Facial Roller','☀️ Skincare','A couple of passes to depuff before makeup/SPF.',60),
-    S('CeraVe Moisturizer','☀️ Skincare','Press in — face, neck, jawline.',30),
+    S('CeraVe Moisturizer','☀️ Skincare','Press in — face, neck, jawline. Save Valjean Labs Glass Skin Squalane for special occasions since it\'s hard to find — treat, not daily need.',30),
     S('Black Girl Sunscreen SPF 30','☀️ Skincare','Two-finger rule. Glow protected.',30),
   ];
 }
@@ -479,7 +515,7 @@ function skinAM(mode){
 // ═══════════ MORNING BODYCARE (mode-only) — right after the shower ═══════════
 function bodyAM(mode){
   const soft=mode==='soft',full=mode==='full';
-  let s=[S('Confirm Dry — Bone-Dry Underarms','🧴 Bodycare','You patted dry in the shower — just double-check underarms are fully dry before anything goes on.',20)];
+  let s=[];
   if(soft||full)s.push(
     S('Witch Hazel Wipe — Pits + Behind Ears','🧴 Bodycare','Quick swipe. Part of the soft-girl-and-up layer.',30),
     S('Studex Hypochlorous Spray','🧴 Bodycare','A light mist all over — it calms everything down.',20),
@@ -488,7 +524,7 @@ function bodyAM(mode){
   s.push(S('EOS Vanilla Cashmere Lotion','🧴 Bodycare','All over, nice and even.',60));
   if(full)s.push(S('Johnson\'s Shea + Cocoa Oil Gel — Dry Spots','🧴 Bodycare','Targeted only, wherever feels dry today.',30));
   s.push(S('Sunscreen — Exposed Areas','☀️ Bodycare','Arms, neck, anywhere the sun will find you.',45));
-  s.push(S('Deodorant','🧴 Bodycare','Secret Powder Fresh as lead, Lume as backup, Certain Dri on a heavy day.',30));
+  s.push(S('Deodorant','🧴 Bodycare','Secret Powder Fresh is your everyday driver — your body chemistry doesn\'t fight it the way vanilla scents can. Lume Solid stays in rotation if you genuinely prefer it that day, not replaced. Certain Dri for exceptionally heavy days only. Old Spice travel spray is for reapplying on the go, never the first application.',30));
   if(full)s.push(S('Fragrance Layering','💕 Scent','Vaseline on pulse points → perfume oil, dabbed not rubbed → mist last if you want it.',60));
   return s;
 }
@@ -501,7 +537,7 @@ function facialTreat(day){
     wednesday:{name:'Epiduo Night',emoji:'🧪',detail:'Same as Monday — pea-sized, avoid eyes/nose/lips.'},
     thursday:{name:'PDRN Pink Pad Recovery',emoji:'💗',detail:'Same as Tuesday — gentle recovery.'},
     friday:{name:'Simple Recovery',emoji:'🌸',detail:'No treatment pad tonight — intentional recovery night.'},
-    saturday:{name:'Red Pad Night',emoji:'🔴',detail:'Medicube Red Pad — upward swipes, T-zone focus, 2–3 passes max, let it sit briefly.'},
+    saturday:{name:'Paula\'s Choice BHA Toner',emoji:'🧴',detail:'2% BHA liquid — smooths texture and keeps pores clear. Swipe over the T-zone and anywhere congested, let it absorb fully before the next step.'},
     sunday:{name:'Simple Recovery',emoji:'🌸',detail:'No treatment pad — gentle closing-of-the-week routine.'},
   };
   return map[day];
@@ -546,7 +582,7 @@ function windDown(mode){
 // ═══════════ NIGHT COMPOSER — shower (incl. face + intimate + body wash) → bodycare → skincare ═══════════
 function nightSteps(day,mode){
   const f=facialTreat(day),b=bodyNight(day),intim=intimateNight(day);
-  let s=[...showerSeq('night',day,mode)];
+  let s=[...showerSeq('night',day,mode),M('Head to Your Room','🛋️ Room','Everything else lives here now — bodycare, then skincare, no back and forth.')];
   if(mode==='bare'){
     s.push(S('Essential Bodycare — Basic Seal','🧴 Bodycare','Skip the active treatment tonight — light layer of whatever seal is on hand.',60));
     s.push(S('Basic Foot Care','🦶🏽 Feet','Cream on heels, socks on. Done.',60));
@@ -566,12 +602,13 @@ function nightSteps(day,mode){
     if(mode==='full'&&intim.extraFullOnly&&day!=='wednesday')s.push(S('Full Slay Extra — '+intim.extra,'🌸 Intimate','Outer area only, be gentle.',90));
     else if(!intim.extraFullOnly)s.push(S(intim.extra,'🌸 Intimate','',60,false));
     if(!footDone){
-      if(mode==='full'&&day==='saturday')s.push(S('Saturday Foot Ritual — Soak + Pumice','🦶🏽 Feet','Epsom soak, gentle pumice, then AmLactin/urea on heels, CeraVe or Eucerin all over, Aquaphor to seal, cotton socks. The full foot night of the week.',600));
-      else s.push(S('Foot Care — Cream + Seal + Socks','🦶🏽 Feet','AmLactin/urea on heels, CeraVe or Eucerin all over, Aquaphor to seal, cotton socks.',90));
+      if(mode==='full'&&day==='saturday')s.push(S('Saturday Foot Ritual — Soak + Pumice','🦶🏽 Feet','Epsom soak 15–20 min first (softens skin, pumice works 10x better after), then pumice stone 60 sec per area, then toenails filed/shaped, cuticles tidied. The full foot night of the week.',600));
+      else s.push(S('Foot Care — Cream + Seal + Socks','🦶🏽 Feet','AmLactin/urea on heels, CeraVe or Eucerin all over the entire foot, Aquaphor to seal heels/toes/cracked areas, cotton socks on immediately after. The socks are the step most people skip — they create a moisture chamber that forces everything to absorb overnight instead of rubbing off on your sheets.',90));
     }
-    if(mode==='full'&&!footDone&&day!=='saturday')s.push(S('Full Slay Feet Extra — Body Oil + Cuticle Oil','🦶🏽 Feet','Quick pass on top of the basics.',60,false));
+    if(mode==='full'&&!footDone&&day!=='saturday')s.push(S('Full Slay Feet Extra — Body Oil + Cuticle Oil','🦶🏽 Feet','A few drops of body oil on top of feet + ankles for the glow, cuticle oil pressed in — 30 seconds, not the whole Saturday routine.',60,false));
     s.push(S('Thayers Milky Toner','🌙 Skincare','Pat in gently.',30));
     s.push(S(f.emoji+' '+f.name,'🌙 Skincare',f.detail,90));
+    if(day==='saturday')s.push(M('🌙 Monthly Red Pad Night','🌙 Skincare','First Saturday of the month: swap the BHA toner for the Medicube Red Pad tonight — upward swipes, T-zone focus, 2–3 passes max, let it sit briefly.'));
     s.push(S('Cicaplast B5','🌙 Skincare','A comforting layer to end on.',30));
     s.push(S('Lip Balm','🌙 Skincare','',15));
     s.push(S('Lash Serum — If Scheduled','🌙 Skincare','Only if it\'s in rotation tonight.',20,false));
@@ -585,6 +622,7 @@ function chillMorning(mode,day,label){
   return [
     M('Wake — Bathroom, Water, Hygiene','🌅 Rise',label),
     ...showerSeq('morning',day,mode),
+    M('Head to Your Room','🛋️ Room','Everything else lives here now — bodycare, then skincare, no back and forth.'),
     ...bodyAM(mode),
     ...skinAM(mode),
     S('Breakfast','🍽️ Nourish','Something warm and cozy to start the day.',600),
@@ -605,6 +643,7 @@ function morningSteps(day,mode,lab){
       S('Lower-Body Workout','💪 Gym','5:00–5:45ish, progressive overload. You\'re doing amazing.',2700),
       M('Drive Home','🚗 Transit','Cool-down playlist on.'),
       ...showerSeq('morning',day,mode),
+      M('Head to Your Room','🛋️ Room','Everything else lives here now — bodycare, then skincare, no back and forth.'),
       ...bodyAM(mode),
       ...skinAM(mode),
       S('Get Dressed','👗 Out the Door','',300),
@@ -619,6 +658,7 @@ function morningSteps(day,mode,lab){
       return [
         M('Early Wake — Hygiene','🌅 Rise','Earlier start today for lab. Bathroom, water, wake up gently.'),
         ...showerSeq('morning',day,mode),
+        M('Head to Your Room','🛋️ Room','Everything else lives here now — bodycare, then skincare, no back and forth.'),
         ...bodyAM(mode),
         ...skinAM(mode),
         S('Get Dressed','👗 Out the Door','Lab-day layers — comfortable and cute.',240),
@@ -636,7 +676,7 @@ function morningSteps(day,mode,lab){
       M('4:40 AM — Leave Home','🚗 Transit',''),
       M('~4:50 AM — Arrive at Gym','💪 Gym','Gym opens at 5:00 — use the wait to stretch.'),
       S('5:00–5:30 Efficient Lower-Body Workout','💪 Gym','Keep it efficient — the whole morning protects the station deadline.',1800),
-      S('5:30–5:45 Gym Shower','🚿 Shower','Warm not hot, quick wash. Face cleanser goes on and rinses off right here too. Pat dry — bone dry underarms before anything else.',900),
+      S('5:30–5:45 Gym Shower','🚿 Bathroom','Warm not hot, quick wash. Face cleanser goes on and rinses off right here too. Pat dry — bone dry underarms before anything else.',900),
       S('5:45–5:50 Bodycare + Skincare — Efficient','☀️ Skincare','Lotion + deodorant first, then whichever skincare mode you\'ve picked. Keep it brisk — this window is tight by design.',300),
       S('Get Dressed at Gym','👗 Prep','Train-day outfit — comfortable but cute.',180),
       S('Hair, Deodorant + Final Check','✅ Check','Bags grabbed, quick mirror check, water filled.',120),
@@ -659,6 +699,7 @@ function morningSteps(day,mode,lab){
       S('Workout','💪 Gym','5:00–5:45ish — finish strong, it\'s Friday.',2700),
       M('Drive Home','🚗 Transit','Weekend energy loading…'),
       ...showerSeq('morning',day,mode),
+      M('Head to Your Room','🛋️ Room','Everything else lives here now — bodycare, then skincare, no back and forth.'),
       ...bodyAM(mode),
       ...skinAM(mode),
       S('Get Dressed','👗 Out the Door','',300),
@@ -717,7 +758,7 @@ function pumpkinSVG(mood,size){
 function moodFor(phase){
   if(phase.indexOf('Wind-Down')>-1)return 'sleepy';
   if(phase.indexOf('Gym')>-1)return 'strong';
-  if(['Skincare','Bodycare','Intimate','Feet','Shower'].some(p=>phase.indexOf(p)>-1))return 'sparkle';
+  if(['Skincare','Bodycare','Intimate','Feet','Bathroom'].some(p=>phase.indexOf(p)>-1))return 'sparkle';
   return 'happy';
 }
 
@@ -850,6 +891,8 @@ function setTime(t){cTime=t;document.getElementById('tab-m').classList.toggle('a
 function setMode(m){cMode=m;['soft','full','bare'].forEach(function(x){document.getElementById('mode-'+x).classList.toggle('active',x===m);});renderPrev();}
 function setLab(v){cLab=v;document.getElementById('lab-yes').classList.toggle('active',v);document.getElementById('lab-no').classList.toggle('active',!v);renderDayRow();renderPrev();}
 
+function isFirstSaturday(){const d=new Date();return d.getDay()===6&&d.getDate()<=7;}
+
 function renderPrev(){
   const steps=getSteps(cDay,cTime,cMode,cLab);
   const dur=steps.reduce(function(a,s){return a+s.duration;},0);
@@ -866,6 +909,8 @@ function renderPrev(){
     else if(cDay==='tuesday'&&cLab)dtext='🚨 Leave house by 5:30 AM (5:45 absolute latest)';
   }
   if(dtext){dl.style.display='block';dl.textContent=dtext;}else{dl.style.display='none';}
+  const ms=document.getElementById('monthly-strip');
+  if(cDay==='saturday'&&cTime==='night'&&isFirstSaturday()){ms.style.display='block';ms.innerHTML='🌙 <b>Tonight\'s your monthly Red Pad night</b> — swap the BHA toner for the Medicube Red Pad.';}else{ms.style.display='none';}
   let lastPhase='';
   document.getElementById('preview').innerHTML=steps.map(function(s){
     const dl2=s.duration>0?(s.duration>=60?Math.round(s.duration/60)+'m':s.duration+'s'):'';
