@@ -141,8 +141,6 @@
   .ru{font-size:9px;font-weight:800;color:var(--muted);letter-spacing:.22em;text-transform:uppercase;margin-top:4px;}
   .rc.pulse{animation:ringPulse 2s ease infinite;}
   @keyframes ringPulse{0%,100%{transform:scale(1);}50%{transform:scale(1.03);}}
-  .brbtn{width:100%;padding:13px;background:linear-gradient(135deg,#F6E3C2,#F2D3A8);border:2px dashed var(--caramel);color:#9A6420;border-radius:16px;font-size:13px;font-weight:800;cursor:pointer;transition:all .2s;margin-bottom:12px;}
-  .brbtn:hover{background:linear-gradient(135deg,#F2D3A8,#EDC48E);}
   .mbdb{width:100%;padding:14px;background:linear-gradient(135deg,var(--pumpkin),var(--pumpkin-deep));border:none;color:#fff;border-radius:16px;font-size:14px;font-weight:800;cursor:pointer;transition:all .2s;margin-bottom:12px;box-shadow:0 8px 20px rgba(224,131,69,.35);}
   .mbdb:hover{transform:translateY(-1px);}
   .ccc{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
@@ -202,14 +200,11 @@
   .pstat-v{font-size:20px;font-weight:800;color:var(--pumpkin-deep);}
   .pstat-l{font-size:9px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-top:2px;}
 
-  /* breathing */
-  .br-card{text-align:center;padding:40px 20px;}
-  .br-circle{width:190px;height:190px;margin:6px auto 18px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#F7C489,#E08345);display:flex;align-items:center;justify-content:center;box-shadow:0 14px 34px rgba(224,131,69,.4);transition:transform 4s ease-in-out;}
-  .br-circle span{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:20px;color:#fff;text-shadow:0 1px 6px rgba(120,60,20,.4);}
-  .br-hint{font-size:12px;font-weight:700;color:var(--muted);margin-bottom:18px;}
 
   .mode-note{padding:4px 22px 0;text-align:center;font-family:"Cormorant Garamond",serif;font-style:italic;font-size:14.5px;color:var(--ink-soft);line-height:1.55;}
-  .monthly-strip{margin:12px 16px 0;background:linear-gradient(135deg,#F1E9F7,#E4D5EE);border:2px solid #C9B3DD;border-radius:16px;padding:10px 14px;font-size:12px;font-weight:700;color:#6B4E8E;line-height:1.5;}
+  .sc-focus{font-size:12px;font-weight:800;color:var(--pumpkin-deep);margin-top:6px;line-height:1.5;}
+  .focus-banner{margin:12px 16px 0;background:linear-gradient(135deg,#F3E8F7,#EADCF3);border:2px solid #C9B3DD;border-radius:16px;padding:10px 14px;font-size:13px;font-weight:800;color:#6B4E8E;text-align:center;line-height:1.5;}
+  .srow.trans{border-style:dashed;border-color:var(--caramel);background:#FDF3DF;}
   .rem-note{font-size:13px;font-weight:600;color:var(--ink-soft);line-height:1.7;margin-top:10px;}
   @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
   .fi{animation:fadeUp .3s ease both;}
@@ -227,12 +222,12 @@
     <div class="mascot" id="hdrMascot"></div>
     <div class="app-eyebrow">🍂 Her Glow Ritual 🍂</div>
     <div class="app-title">Soft <em>Fall</em> Ritual</div>
-    <div class="app-sub" id="affirmLine">cozy mornings &amp; nights · three ways to glow</div>
+    <div class="app-sub" id="affirmLine">cozy mornings &amp; evenings · three ways to glow</div>
   </div>
 
   <div class="time-tabs">
     <button class="time-tab active" id="tab-m" onclick="setTime('morning')"><span class="ti">☀️</span>Morning</button>
-    <button class="time-tab" id="tab-n" onclick="setTime('night')"><span class="ti">🌙</span>Night</button>
+    <button class="time-tab" id="tab-n" onclick="setTime('night')"><span class="ti">🌙</span>Evening</button>
   </div>
   <div class="day-row" id="day-row"></div>
   <div class="lab-row" id="lab-row">
@@ -246,12 +241,12 @@
   </div>
   <div class="mode-note">Soft Girl is your everyday default — already a complete routine. Full Slay is a treat for when you have time. Bare Min is a safety net, never a failure.</div>
   <div class="deadline-strip" id="deadline-strip" style="display:none;"></div>
-  <div class="monthly-strip" id="monthly-strip" style="display:none;"></div>
   <div class="sum-card">
     <div>
       <div class="sc-lbl">✨ Today's Ritual ✨</div>
       <div class="sc-dur" id="sc-dur">— min</div>
       <div class="sc-type" id="sc-type">—</div>
+      <div class="sc-focus" id="sc-focus"></div>
     </div>
     <button class="sbtn" onclick="startR()">Begin →</button>
   </div>
@@ -271,6 +266,7 @@
     </div>
     <div class="av-pt"><div class="av-pf" id="av-pf" style="width:0%"></div></div>
   </div>
+  <div class="focus-banner" id="focusBanner" style="display:none;"></div>
   <div class="fstrip">
     <div>
       <div class="fsl">Done by</div>
@@ -321,8 +317,21 @@
         <ul>
           <li><strong>Baby Foot Peel</strong> — once a month. Booties on for an hour, seal with socks, peeling starts in 3–5 days. Plan it for a week you're mostly home. Pairs with a Sunday soft-reset night.</li>
           <li><strong>Moroccan Hammam Swap</strong> — first Saturday of the month, in place of the regular deep-clean night.</li>
-          <li><strong>Red Pad Night</strong> — once a month, on the first Saturday: swap the Paula's Choice BHA toner for the Medicube Red Pad (upward swipes, T-zone focus, 2–3 passes max).</li>
+          <li><strong>💗 PDRN / Red Pad Hydration Reset</strong> — approximately once a month or less, on a recovery night (Tue/Thu/Sat). Never on an active night — if it coincides with one, the scheduled active/recovery plan wins.</li>
         </ul>
+      </div>
+      <div class="rem-sec">
+        <h3>Weekly Skin Focus</h3>
+        <ul>
+          <li>🧴 <strong>Monday</strong> — Epiduo Night</li>
+          <li>💧 <strong>Tuesday</strong> — Recovery Night</li>
+          <li>🧴 <strong>Wednesday</strong> — Adapalene 0.1% Night</li>
+          <li>💧 <strong>Thursday</strong> — Recovery Night</li>
+          <li>✨ <strong>Friday</strong> — Paula's Choice 2% BHA Night</li>
+          <li>💧 <strong>Saturday</strong> — Recovery Night</li>
+          <li>🛡️ <strong>Sunday</strong> — Barrier Night (Dr. Althea 345 + Cicaplast as extra barrier support)</li>
+        </ul>
+        <p class="rem-note">One treatment per night, never stacked. Recovery nights are for rest — no acids, no retinoids. Modes change the <em>amount</em> of routine, never the treatment schedule.</p>
       </div>
       <div class="rem-sec">
         <h3>Hair Removal / Ingrown Reminder System</h3>
@@ -399,17 +408,6 @@
   </div>
 </div>
 
-<div class="ov" id="breathOv">
-  <div class="ov-inner">
-    <div class="ov-card br-card">
-      <div class="ov-title" style="margin-bottom:4px;">🍂 <em>breathe</em> with me</div>
-      <div class="br-hint">follow the circle · it loops until you're ready</div>
-      <div class="br-circle" id="brCircle"><span id="brTxt">breathe in</span></div>
-      <button class="dbb" onclick="closeBreath()">i'm calm now 🤍</button>
-    </div>
-  </div>
-</div>
-
 <script>
 // ─── PWA Icon (soft fall pumpkin) ────────────────────────────────────────────
 function rrect(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.quadraticCurveTo(x+w,y,x+w,y+r);ctx.lineTo(x+w,y+h-r);ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);ctx.lineTo(x+r,y+h);ctx.quadraticCurveTo(x,y+h,x,y+h-r);ctx.lineTo(x,y+r);ctx.quadraticCurveTo(x,y,x+r,y);ctx.closePath();}
@@ -441,13 +439,21 @@ function buildIcon(){
   sparkle(120,140,16,'#D9A441',0.9);sparkle(392,150,12,'#E08345',0.8);sparkle(360,410,14,'#D97E6A',0.7);
   return c.toDataURL('image/png');
 }
-function setupPWA(){try{const u=buildIcon();document.getElementById('apple-touch-icon').href=u;document.getElementById('favicon').href=u;const m={name:'Her Glow Ritual — Soft Fall',short_name:'Her Glow',description:'Cozy full-week morning & night ritual timer',start_url:'.',display:'standalone',background_color:'#FBF3E6',theme_color:'#FBF3E6',orientation:'portrait',icons:[{src:u,sizes:'512x512',type:'image/png',purpose:'any maskable'}]};const b=new Blob([JSON.stringify(m)],{type:'application/manifest+json'});document.getElementById('pwa-manifest').href=URL.createObjectURL(b);}catch(e){console.warn('PWA:',e);}}
+function setupPWA(){try{const u=buildIcon();document.getElementById('apple-touch-icon').href=u;document.getElementById('favicon').href=u;const m={name:'Her Glow Ritual — Soft Fall',short_name:'Her Glow',description:'Cozy full-week morning & evening ritual timer',start_url:'.',display:'standalone',background_color:'#FBF3E6',theme_color:'#FBF3E6',orientation:'portrait',icons:[{src:u,sizes:'512x512',type:'image/png',purpose:'any maskable'}]};const b=new Blob([JSON.stringify(m)],{type:'application/manifest+json'});document.getElementById('pwa-manifest').href=URL.createObjectURL(b);}catch(e){console.warn('PWA:',e);}}
 
 // ─── Data ───────────────────────────────────────────────────────────────────
 const DAYS=[{id:'monday',l:'Mon',f:'Monday'},{id:'tuesday',l:'Tue',f:'Tuesday'},{id:'wednesday',l:'Wed',f:'Wednesday'},{id:'thursday',l:'Thu',f:'Thursday'},{id:'friday',l:'Fri',f:'Friday'},{id:'saturday',l:'Sat',f:'Saturday'},{id:'sunday',l:'Sun',f:'Sunday'}];
 const GYM_DAYS=['monday','wednesday','friday'];
 function S(n,p,d,dur=60,t=true){return{name:n,phase:p,detail:d,duration:dur,timed:t};}
 function M(n,p,d){return{name:n,phase:p,detail:d,duration:0,timed:false,mile:true};}
+// ─── Sections: every ritual is split into location-based sections ────────────
+function tag(steps,sec){steps.forEach(s=>s.sec=sec);return steps;}
+function transStep(){return{name:'Shower Complete',phase:'✨ Transition',detail:'Grab your skincare and head to your room 🤍',duration:0,timed:false,mile:false,transition:true,sec:'shower'};}
+const SEC={
+  start:{short:'☀️ Morning',long:'☀️ MORNING'},
+  shower:{short:'🚿 Shower',long:'🚿 IN THE SHOWER'},
+  room:{short:'🛏️ Room',long:'🛏️ AFTER THE SHOWER / IN MY ROOM'}
+};
 
 // Morning body wash actually assigned per day (no more mystery wash)
 function washAM(day){
@@ -491,13 +497,13 @@ function showerSeq(time,day,mode){
 // ═══════════ MORNING SKINCARE (mode-only) — cleanser already done in shower ═══════════
 function skinAM(mode){
   if(mode==='bare')return[
-    S('CeraVe Moisturizer','☀️ Skincare','Press into skin. Quick and cozy.',30),
+    S('Burt\'s Bees Moisturizer','☀️ Skincare','Press into skin. Quick and cozy.',30),
     S('Black Girl Sunscreen SPF 30','☀️ Skincare','Non-negotiable, even on a rush morning.',30),
   ];
   if(mode==='soft')return[
     S('Niacinamide 10% + Zinc','☀️ Skincare','Press in, don\'t rub.',30),
     S('Hyaluronic Acid 2% + B5','☀️ Skincare','On slightly damp skin — it drinks it up.',30),
-    S('CeraVe Moisturizer','☀️ Skincare','Warm between fingertips, press in. Your everyday reliable moisturizer — easy to restock.',30),
+    S('Burt\'s Bees Moisturizer','☀️ Skincare','Warm between fingertips, press in. Simple and reliable.',30),
     S('Black Girl Sunscreen SPF 30','☀️ Skincare','Two-finger rule — face, neck, ears.',30),
   ];
   return[
@@ -507,7 +513,7 @@ function skinAM(mode){
     S('Hyaluronic Acid 2% + B5','☀️ Skincare','On damp skin.',30),
     S('Caffeine Eye Serum','☀️ Skincare','Ring finger, tap around the orbital bone, never drag.',30),
     S('Facial Roller','☀️ Skincare','A couple of passes to depuff before makeup/SPF.',60),
-    S('CeraVe Moisturizer','☀️ Skincare','Press in — face, neck, jawline. Save Valjean Labs Glass Skin Squalane for special occasions since it\'s hard to find — treat, not daily need.',30),
+    S('Burt\'s Bees Moisturizer','☀️ Skincare','Press in — face, neck, jawline.',30),
     S('Black Girl Sunscreen SPF 30','☀️ Skincare','Two-finger rule. Glow protected.',30),
   ];
 }
@@ -529,16 +535,18 @@ function bodyAM(mode){
   return s;
 }
 
-// ═══════════ NIGHT — FIXED WEEKLY FACIAL TREATMENT ═══════════
+// ═══════════ EVENING — FIXED WEEKLY SKIN TREATMENT ROTATION ═══════════
+// One treatment per night, never stacked. Modes change the AMOUNT of routine,
+// never the treatment schedule.
 function facialTreat(day){
   const map={
-    monday:{name:'Epiduo Night',emoji:'🧪',detail:'Adapalene 0.1% + Benzoyl Peroxide 2.5%. Pea-sized amount. Avoid eyes, nose corners, and lips.'},
-    tuesday:{name:'PDRN Pink Pad Recovery',emoji:'💗',detail:'Medicube PDRN Pink Pad — swipe gently, do not aggressively scrub.'},
-    wednesday:{name:'Epiduo Night',emoji:'🧪',detail:'Same as Monday — pea-sized, avoid eyes/nose/lips.'},
-    thursday:{name:'PDRN Pink Pad Recovery',emoji:'💗',detail:'Same as Tuesday — gentle recovery.'},
-    friday:{name:'Simple Recovery',emoji:'🌸',detail:'No treatment pad tonight — intentional recovery night.'},
-    saturday:{name:'Paula\'s Choice BHA Toner',emoji:'🧴',detail:'2% BHA liquid — smooths texture and keeps pores clear. Swipe over the T-zone and anywhere congested, let it absorb fully before the next step.'},
-    sunday:{name:'Simple Recovery',emoji:'🌸',detail:'No treatment pad — gentle closing-of-the-week routine.'},
+    monday:{name:'Epiduo Night',emoji:'🧴',detail:'Adapalene 0.1% + Benzoyl Peroxide 2.5% — your designated Epiduo night. Pea-sized amount. Avoid eyes, nose corners, and lips.',timed:true},
+    tuesday:{name:'Recovery Night',emoji:'💧',detail:'No actives tonight — let your skin rest and rehydrate. Hydration only.',timed:false},
+    wednesday:{name:'Adapalene 0.1% Night',emoji:'🧴',detail:'Your separate 0.1% adapalene gel (not Epiduo) — designated adapalene night. Pea-sized amount. Avoid eyes, nose corners, and lips.',timed:true},
+    thursday:{name:'Recovery Night',emoji:'💧',detail:'No actives tonight — let your skin rest and rehydrate. Hydration only.',timed:false},
+    friday:{name:'Paula\'s Choice 2% BHA Night',emoji:'✨',detail:'Your designated exfoliating night. 2% BHA liquid — swipe over the T-zone and anywhere congested, let it absorb fully. Never stacked with Epiduo or adapalene.',timed:true},
+    saturday:{name:'Recovery Night',emoji:'💧',detail:'No actives tonight — let your skin rest and rehydrate. Hydration only.',timed:false},
+    sunday:{name:'Barrier Night',emoji:'🛡️',detail:'No actives — recovery and barrier support only. Gentle tonight.',timed:false},
   };
   return map[day];
 }
@@ -571,68 +579,66 @@ function intimateNight(day){
   return map[day];
 }
 
-// ═══════════ NIGHT WIND-DOWN (mode) ═══════════
-function windDown(mode){
-  if(mode==='bare'){const s=S('Lights Out','💕 Wind-Down','"Rest. You still showed up today."',30,false);return[s];}
-  if(mode==='soft'){const s=S('Quiet Wind-Down','💕 Wind-Down','About 10 minutes of quiet. Gratitude, cozy blankets. Tap “breathe with me” below if you want a guided minute first. Lights out.',600);s.br=true;return[s];}
-  const a=S('Hobby Time','💕 Wind-Down','Reading / journaling / crochet / guitar — whatever\'s calling tonight. There\'s a “breathe with me” minute here too if you want it.',900);a.br=true;
-  return[a,S('Gratitude + Tomorrow\'s Intention','💕 Wind-Down','Name one thing you\'re grateful for and one intention for tomorrow. Lights out.',120)];
-}
-
-// ═══════════ NIGHT COMPOSER — shower (incl. face + intimate + body wash) → bodycare → skincare ═══════════
+// ═══════════ EVENING COMPOSER — 🚿 shower → 🛏️ room ═══════════
+// "Evening" = post-shower personal care routine (NOT bedtime).
+// Works whenever you shower — noon, 6 PM, or 10 PM.
 function nightSteps(day,mode){
   const f=facialTreat(day),b=bodyNight(day),intim=intimateNight(day);
-  let s=[...showerSeq('night',day,mode),M('Head to Your Room','🛋️ Room','Everything else lives here now — bodycare, then skincare, no back and forth.')];
+  const shower=tag(showerSeq('night',day,mode),'shower');
+  let room=[];
   if(mode==='bare'){
-    s.push(S('Essential Bodycare — Basic Seal','🧴 Bodycare','Skip the active treatment tonight — light layer of whatever seal is on hand.',60));
-    s.push(S('Basic Foot Care','🦶🏽 Feet','Cream on heels, socks on. Done.',60));
-    s.push(S(f.emoji+' '+f.name+' — If Manageable','🌙 Skincare',f.detail+' Optional tonight — skip if you\'re out of gas.',60,false));
-    s.push(S('Cicaplast B5','🌙 Skincare','A comforting layer to end on.',30));
-    s.push(S('Lip Balm','🌙 Skincare','',15));
+    room.push(
+      S('Essential Bodycare — Basic Seal','🧴 Bodycare','Skip the active treatment tonight — light layer of whatever seal is on hand.',60),
+      S('Basic Foot Care','🦶🏽 Feet','Cream on heels, socks on. Done.',60),
+    );
+    if(f.timed)room.push(S(f.emoji+' '+f.name+' — If Manageable','🌙 Skincare',f.detail+' Optional tonight — skip if you\'re out of gas.',60,false));
+    room.push(S('Dr. Althea 345 Relief Cream','🌙 Skincare','Your everyday evening moisturizer.',30));
+    if(day==='sunday')room.push(S('Cicaplast Baume B5 — Extra Barrier Support','🌙 Skincare','Sunday barrier night: an extra layer of barrier support. Occasional — not your everyday moisturizer.',30));
+    room.push(S('👄 Lip Care','🌙 Skincare','Keep lips moisturized and avoid picking or scraping. No scrubs, no actives on the lips.',20));
   } else {
-    if(b.treatment)s.push(S('Treatment — '+b.treatment,'🧴 Bodycare',b.note||'Apply evenly, then give it time to sink in.',120));
+    if(b.treatment)room.push(S('Treatment — '+b.treatment,'🧴 Bodycare',b.note||'Apply evenly, then give it time to sink in.',120));
     let footDone=false;
     if(b.dry){
-      s.push(S('While It Dries — Do Foot Care Now','🦶🏽 Feet','The '+b.treatment.split(' — ')[0]+' needs '+(b.dry/60)+' minutes to dry before you seal it. Use this window instead of standing around: AmLactin/urea on heels, CeraVe or Eucerin all over, Aquaphor to seal, cotton socks. When the timer ends, come back and seal.',b.dry));
+      room.push(S('While It Dries — Do Foot Care Now','🦶🏽 Feet','The '+b.treatment.split(' — ')[0]+' needs '+(b.dry/60)+' minutes to dry before you seal it. Use this window instead of standing around: AmLactin/urea on heels, CeraVe or Eucerin all over, Aquaphor to seal, cotton socks. When the timer ends, come back and seal.',b.dry));
       footDone=true;
     }
-    if(b.seal)s.push(S('Seal — '+b.seal,'🧴 Bodycare',(b.dry?'Now that the treatment has dried, lock it in. ':'')+(b.note&&!b.treatment?b.note:'Lock in all that goodness.'),60));
-    if(mode==='full'&&day==='tuesday')s.push(S('Full Slay Add — Johnson\'s Shea + Cocoa Oil Gel','🧴 Bodycare','Tuesday\'s extra layer of cozy.',30));
-    if(mode==='full'&&day==='saturday')s.push(S('Full Slay Reminder','🧴 Bodycare',b.note,20,false));
-    if(mode==='full'&&intim.extraFullOnly&&day!=='wednesday')s.push(S('Full Slay Extra — '+intim.extra,'🌸 Intimate','Outer area only, be gentle.',90));
-    else if(!intim.extraFullOnly)s.push(S(intim.extra,'🌸 Intimate','',60,false));
+    if(b.seal)room.push(S('Seal — '+b.seal,'🧴 Bodycare',(b.dry?'Now that the treatment has dried, lock it in. ':'')+(b.note&&!b.treatment?b.note:'Lock in all that goodness.'),60));
+    if(mode==='full'&&day==='tuesday')room.push(S('Full Slay Add — Johnson\'s Shea + Cocoa Oil Gel','🧴 Bodycare','Tuesday\'s extra layer of cozy.',30));
+    if(mode==='full'&&day==='saturday')room.push(S('Full Slay Reminder','🧴 Bodycare',b.note,20,false));
+    if(mode==='full'&&intim.extraFullOnly&&day!=='wednesday')room.push(S('Full Slay Extra — '+intim.extra,'🌸 Intimate','Outer area only, be gentle.',90));
+    else if(!intim.extraFullOnly)room.push(S(intim.extra,'🌸 Intimate','',60,false));
     if(!footDone){
-      if(mode==='full'&&day==='saturday')s.push(S('Saturday Foot Ritual — Soak + Pumice','🦶🏽 Feet','Epsom soak 15–20 min first (softens skin, pumice works 10x better after), then pumice stone 60 sec per area, then toenails filed/shaped, cuticles tidied. The full foot night of the week.',600));
-      else s.push(S('Foot Care — Cream + Seal + Socks','🦶🏽 Feet','AmLactin/urea on heels, CeraVe or Eucerin all over the entire foot, Aquaphor to seal heels/toes/cracked areas, cotton socks on immediately after. The socks are the step most people skip — they create a moisture chamber that forces everything to absorb overnight instead of rubbing off on your sheets.',90));
+      if(mode==='full'&&day==='saturday')room.push(S('Saturday Foot Ritual — Soak + Pumice','🦶🏽 Feet','Epsom soak 15–20 min first (softens skin, pumice works 10x better after), then pumice stone 60 sec per area, then toenails filed/shaped, cuticles tidied. The full foot night of the week.',600));
+      else room.push(S('Foot Care — Cream + Seal + Socks','🦶🏽 Feet','AmLactin/urea on heels, CeraVe or Eucerin all over the entire foot, Aquaphor to seal heels/toes/cracked areas, cotton socks on immediately after. The socks are the step most people skip — they create a moisture chamber that forces everything to absorb overnight instead of rubbing off on your sheets.',90));
     }
-    if(mode==='full'&&!footDone&&day!=='saturday')s.push(S('Full Slay Feet Extra — Body Oil + Cuticle Oil','🦶🏽 Feet','A few drops of body oil on top of feet + ankles for the glow, cuticle oil pressed in — 30 seconds, not the whole Saturday routine.',60,false));
-    s.push(S('Thayers Milky Toner','🌙 Skincare','Pat in gently.',30));
-    s.push(S(f.emoji+' '+f.name,'🌙 Skincare',f.detail,90));
-    if(day==='saturday')s.push(M('🌙 Monthly Red Pad Night','🌙 Skincare','First Saturday of the month: swap the BHA toner for the Medicube Red Pad tonight — upward swipes, T-zone focus, 2–3 passes max, let it sit briefly.'));
-    s.push(S('Cicaplast B5','🌙 Skincare','A comforting layer to end on.',30));
-    s.push(S('Lip Balm','🌙 Skincare','',15));
-    s.push(S('Lash Serum — If Scheduled','🌙 Skincare','Only if it\'s in rotation tonight.',20,false));
+    if(mode==='full'&&!footDone&&day!=='saturday')room.push(S('Full Slay Feet Extra — Body Oil + Cuticle Oil','🦶🏽 Feet','A few drops of body oil on top of feet + ankles for the glow, cuticle oil pressed in — 30 seconds, not the whole Saturday routine.',60,false));
+    room.push(S('Thayers Milky Toner','🌙 Skincare','Pat in gently.',30));
+    room.push(S(f.emoji+' '+f.name,'🌙 Skincare',f.detail,f.timed?90:0,f.timed));
+    room.push(S('Dr. Althea 345 Relief Cream','🌙 Skincare','Your everyday evening moisturizer — face and neck.',45));
+    if(day==='sunday')room.push(S('Cicaplast Baume B5 — Extra Barrier Support','🌙 Skincare','Sunday barrier night: an extra layer of barrier support on top of your moisturizer. Occasional — not your everyday moisturizer.',45));
+    room.push(S('👄 Lip Care','🌙 Skincare','Keep lips moisturized and avoid picking or scraping. No scrubs, no actives on the lips.',20));
+    room.push(S('Lash Serum — If Scheduled','🌙 Skincare','Only if it\'s in rotation tonight.',20,false));
   }
-  s.push(...windDown(mode));
-  return s;
+  tag(room,'room');
+  return [...shower,transStep(),...room];
 }
 
 // ═══════════ MORNING COMPOSER — per day ═══════════
 function chillMorning(mode,day,label){
-  return [
-    M('Wake — Bathroom, Water, Hygiene','🌅 Rise',label),
-    ...showerSeq('morning',day,mode),
-    M('Head to Your Room','🛋️ Room','Everything else lives here now — bodycare, then skincare, no back and forth.'),
+  const pre=tag([M('Wake — Bathroom, Water, Hygiene','🌅 Rise',label)],'start');
+  const sh=tag(showerSeq('morning',day,mode),'shower');
+  const post=tag([
     ...bodyAM(mode),
     ...skinAM(mode),
     S('Breakfast','🍽️ Nourish','Something warm and cozy to start the day.',600),
     S('Get Dressed','👗 Out the Door','Soft layers for a soft day.',300),
-  ];
+  ],'room');
+  return [...pre,...sh,transStep(),...post];
 }
 
 function morningSteps(day,mode,lab){
   if(day==='monday'){
-    return [
+    const pre=tag([
       M('4:00 AM — Wake + Activate','🌅 Rise','Bathroom, water. No snoozing — the whole morning depends on this.'),
       S('Pre-Gym Fuel','🍌 Fuel','Banana + small protein shake.',300),
       S('Get Dressed for Gym','👟 Prep','Lay it out the night before — future you says thanks.',180),
@@ -642,8 +648,9 @@ function morningSteps(day,mode,lab){
       M('4:50 AM — Arrive at Gym','💪 Gym','Gym opens at 5:00 — use the wait to breathe and stretch.'),
       S('Lower-Body Workout','💪 Gym','5:00–5:45ish, progressive overload. You\'re doing amazing.',2700),
       M('Drive Home','🚗 Transit','Cool-down playlist on.'),
-      ...showerSeq('morning',day,mode),
-      M('Head to Your Room','🛋️ Room','Everything else lives here now — bodycare, then skincare, no back and forth.'),
+    ],'start');
+    const sh=tag(showerSeq('morning',day,mode),'shower');
+    const post=tag([
       ...bodyAM(mode),
       ...skinAM(mode),
       S('Get Dressed','👗 Out the Door','',300),
@@ -651,72 +658,84 @@ function morningSteps(day,mode,lab){
       S('Pack + Check School Items','🎒 Prep','',180),
       M('Final Departure Check','✅ Check','Keys, phone, wallet, water, headphones.'),
       M('🚨 6:45 AM — LEAVE HOUSE FOR TRAIN','🚉 Deadline','Hard deadline. Station is ~30 min away — this means leaving HOME, not arriving at the station.'),
-    ];
+    ],'room');
+    return [...pre,...sh,transStep(),...post];
   }
   if(day==='tuesday'){
     if(lab){
-      return [
+      const pre=tag([
         M('Early Wake — Hygiene','🌅 Rise','Earlier start today for lab. Bathroom, water, wake up gently.'),
-        ...showerSeq('morning',day,mode),
-        M('Head to Your Room','🛋️ Room','Everything else lives here now — bodycare, then skincare, no back and forth.'),
+      ],'start');
+      const sh=tag(showerSeq('morning',day,mode),'shower');
+      const post=tag([
         ...bodyAM(mode),
         ...skinAM(mode),
         S('Get Dressed','👗 Out the Door','Lab-day layers — comfortable and cute.',240),
         S('Breakfast / Prepared Food','🍽️ Nourish','Eat something real before lab.',300),
         M('School / Lab Bag Check','🎒 Prep','Lab coat, notebook, everything you need.'),
         M('🚨 5:30 AM Target — Leave House (5:45 absolute latest)','🧪 Deadline','Lab-day hard deadline.'),
-      ];
+      ],'room');
+      return [...pre,...sh,transStep(),...post];
     }
     return chillMorning(mode,day,'Normal, relaxed Tuesday — no forced 4 AM schedule.');
   }
   if(day==='wednesday'){
-    return [
+    const pre=tag([
       M('4:20 AM — Wake','🌅 Rise','Bathroom, water, quick fuel — banana + protein shake.'),
       S('Get Dressed + Grab Gym & School Bags','👟 Prep','Train-day layers laid out last night, so this is grab-and-go.',180),
       M('4:40 AM — Leave Home','🚗 Transit',''),
       M('~4:50 AM — Arrive at Gym','💪 Gym','Gym opens at 5:00 — use the wait to stretch.'),
       S('5:00–5:30 Efficient Lower-Body Workout','💪 Gym','Keep it efficient — the whole morning protects the station deadline.',1800),
+    ],'start');
+    const sh=tag([
       S('5:30–5:45 Gym Shower','🚿 Bathroom','Warm not hot, quick wash. Face cleanser goes on and rinses off right here too. Pat dry — bone dry underarms before anything else.',900),
+    ],'shower');
+    const post=tag([
       S('5:45–5:50 Bodycare + Skincare — Efficient','☀️ Skincare','Lotion + deodorant first, then whichever skincare mode you\'ve picked. Keep it brisk — this window is tight by design.',300),
       S('Get Dressed at Gym','👗 Prep','Train-day outfit — comfortable but cute.',180),
       S('Hair, Deodorant + Final Check','✅ Check','Bags grabbed, quick mirror check, water filled.',120),
       M('~5:50 AM — Leave Gym','🚗 Transit','Straight to the station — not home.'),
       M('🚨 ~6:10 AM — Arrive at Train Station (absolute latest)','🚉 Deadline','Straight from the gym to the station — not home.'),
-    ];
+    ],'room');
+    return [...pre,...sh,...post];
   }
   if(day==='thursday'){
     let s=chillMorning(mode,day,'Chill morning — no gym deadline, no unnecessary 4 AM wake-up.');
-    if(mode==='full')s.push(S('Optional — Reading / Guitar / Crochet / Journaling / Music','🌿 Slow Morning','Peaceful, not optimized to death. Just enjoy it.',900,false));
-    if(mode==='soft')s.push(S('Optional — A Little Slow Time','🌿 Slow Morning','A few unhurried minutes, just for you.',300,false));
+    if(mode==='full'){const x=S('Optional — Reading / Guitar / Crochet / Journaling / Music','🌿 Slow Morning','Peaceful, not optimized to death. Just enjoy it.',900,false);x.sec='room';s.push(x);}
+    if(mode==='soft'){const x=S('Optional — A Little Slow Time','🌿 Slow Morning','A few unhurried minutes, just for you.',300,false);x.sec='room';s.push(x);}
     return s;
   }
   if(day==='friday'){
-    return [
+    const pre=tag([
       M('~4:00 AM — Wake','🌅 Rise','Bathroom, water — same early start as Monday. You know this rhythm.'),
       S('Pre-Gym Fuel + Get Ready','🍌 Fuel','Banana + protein shake, then gym clothes and bags.',300),
       M('Leave Home','🚗 Transit',''),
       M('Arrive at Gym Before 5:00 Opening','💪 Gym','Use the wait to stretch.'),
       S('Workout','💪 Gym','5:00–5:45ish — finish strong, it\'s Friday.',2700),
       M('Drive Home','🚗 Transit','Weekend energy loading…'),
-      ...showerSeq('morning',day,mode),
-      M('Head to Your Room','🛋️ Room','Everything else lives here now — bodycare, then skincare, no back and forth.'),
+    ],'start');
+    const sh=tag(showerSeq('morning',day,mode),'shower');
+    const post=tag([
       ...bodyAM(mode),
       ...skinAM(mode),
       S('Get Dressed','👗 Out the Door','',300),
       S('Breakfast','🍽️ Nourish','',480),
       S('🌿 Chill Buffer — Guitar / Reading / Crochet / Journaling / Coffee','🌿 Buffer','No train pressure today — this buffer is intentional, protect it.',mode==='full'?1800:mode==='soft'?900:300,mode!=='bare'),
-    ];
+    ],'room');
+    // the chill buffer is untimed in bare mode but still part of the room section
+    post.forEach(s=>{if(!s.sec)s.sec='room';});
+    return [...pre,...sh,transStep(),...post];
   }
   if(day==='saturday'){
     let s=chillMorning(mode,day,'Chill morning — no forced gym schedule.');
-    if(mode!=='bare')s.push(S('Optional — Hobbies / Relaxing / Errands / Work Prep','🌿 Slow Morning','Soft, leisurely, realistic.',mode==='full'?900:300,false));
+    if(mode!=='bare'){const x=S('Optional — Hobbies / Relaxing / Errands / Work Prep','🌿 Slow Morning','Soft, leisurely, realistic.',mode==='full'?900:300,false);x.sec='room';s.push(x);}
     return s;
   }
   // sunday
   let s=chillMorning(mode,day,'Soft reset morning.');
-  let reset=[S('Check Calendar','📋 Weekly Reset','Ease into the week ahead.',60,false)];
-  if(mode!=='bare')reset.push(S('Review School Schedule + Assignments','📋 Weekly Reset','Know what\'s coming so nothing surprises you.',180,false),S('Check Work Schedule + Confirm Gym Days','📋 Weekly Reset','',120,false));
-  if(mode==='full')reset.push(S('Prep School/Clinical Materials + Outfit Planning','📋 Weekly Reset','Future-you will be so grateful.',300,false),S('Light Room Reset','📋 Weekly Reset','Tidy space, tidy mind.',300,false));
+  let reset=tag([S('Check Calendar','📋 Weekly Reset','Ease into the week ahead.',60,false)],'room');
+  if(mode!=='bare')reset.push(...tag([S('Review School Schedule + Assignments','📋 Weekly Reset','Know what\'s coming so nothing surprises you.',180,false),S('Check Work Schedule + Confirm Gym Days','📋 Weekly Reset','',120,false)],'room'));
+  if(mode==='full')reset.push(...tag([S('Prep School/Clinical Materials + Outfit Planning','📋 Weekly Reset','Future-you will be so grateful.',300,false),S('Light Room Reset','📋 Weekly Reset','Tidy space, tidy mind.',300,false)],'room'));
   s.push(...reset);
   return s;
 }
@@ -772,7 +791,7 @@ const AFFIRM={
   saturday:'rest is productive too 🛋️',
   sunday:'reset, refresh, realign 🤍'
 };
-function setAffirm(){document.getElementById('affirmLine').textContent=AFFIRM[cDay]||'cozy mornings & nights · three ways to glow';}
+function setAffirm(){document.getElementById('affirmLine').textContent=AFFIRM[cDay]||'cozy mornings & evenings · three ways to glow';}
 
 // ─── Storage helpers ────────────────────────────────────────────────────────
 function lsGet(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v);}catch(e){return d;}}
@@ -852,29 +871,6 @@ function leafConfetti(container){
   }
 }
 
-// ─── Breathing minute ───────────────────────────────────────────────────────
-let brTimers=[],brWasRun=false;
-function openBreath(){
-  document.getElementById('breathOv').classList.add('vis');
-  brWasRun=isRun;isRun=false;brLoop();
-}
-function closeBreath(){
-  document.getElementById('breathOv').classList.remove('vis');
-  brTimers.forEach(clearTimeout);brTimers=[];
-  isRun=brWasRun;
-}
-function brLoop(){
-  const c=document.getElementById('brCircle'),t=document.getElementById('brTxt');
-  const seq=[['breathe in',1.45,4000],['hold',1.45,4000],['breathe out',1,4500]];
-  let i=0;
-  function step(){
-    const s=seq[i%3];
-    t.textContent=s[0];c.style.transform='scale('+s[1]+')';
-    brTimers.push(setTimeout(function(){i++;step();},s[2]));
-  }
-  step();
-}
-
 // ─── App state / rendering (timer engine) ───────────────────────────────────
 let cDay='monday',cTime='morning',cMode='soft',cLab=false;
 let aSteps=[],sIdx=0,sTotal=0,sLeft=0,isRun=false,tInt=null,sTime=null,tShift=0;
@@ -891,7 +887,21 @@ function setTime(t){cTime=t;document.getElementById('tab-m').classList.toggle('a
 function setMode(m){cMode=m;['soft','full','bare'].forEach(function(x){document.getElementById('mode-'+x).classList.toggle('active',x===m);});renderPrev();}
 function setLab(v){cLab=v;document.getElementById('lab-yes').classList.toggle('active',v);document.getElementById('lab-no').classList.toggle('active',!v);renderDayRow();renderPrev();}
 
-function isFirstSaturday(){const d=new Date();return d.getDay()===6&&d.getDate()<=7;}
+// "Tonight's skin focus" — the whole point is zero decisions.
+function focusText(){
+  if(cTime==='morning')return '☀️ Morning focus: cleanse · Burt\u2019s Bees · SPF';
+  const f=facialTreat(cDay);
+  return '🌙 Tonight\u2019s skin focus: '+f.emoji+' '+f.name;
+}
+// Section-aware step counter: "🚿 Shower · Step 2 of 7"
+function secProgress(){
+  const cur=aSteps[sIdx];
+  if(!cur)return '';
+  if(cur.transition)return '✨ Transition — head to your room';
+  const inSec=aSteps.filter(s=>!s.transition&&s.sec===cur.sec);
+  const idx=inSec.indexOf(cur)+1;
+  return SEC[cur.sec].short+' · Step '+idx+' of '+inSec.length;
+}
 
 function renderPrev(){
   const steps=getSteps(cDay,cTime,cMode,cLab);
@@ -899,7 +909,9 @@ function renderPrev(){
   document.getElementById('sc-dur').textContent=Math.round(dur/60)+' min';
   const dayF=DAYS.find(function(d){return d.id===cDay;}).f;
   const modeLabel=cMode==='full'?'Full Slay':cMode==='soft'?'Soft Girl':'Bare Minimum';
-  document.getElementById('sc-type').textContent=dayF+' · '+(cTime==='morning'?'Morning':'Night')+' · '+modeLabel;
+  const timeLabel=cTime==='morning'?'Morning':'Evening';
+  document.getElementById('sc-type').textContent=dayF+' · '+timeLabel+' · '+modeLabel;
+  document.getElementById('sc-focus').textContent=focusText();
   setAffirm();
   const dl=document.getElementById('deadline-strip');
   let dtext='';
@@ -909,13 +921,15 @@ function renderPrev(){
     else if(cDay==='tuesday'&&cLab)dtext='🚨 Leave house by 5:30 AM (5:45 absolute latest)';
   }
   if(dtext){dl.style.display='block';dl.textContent=dtext;}else{dl.style.display='none';}
-  const ms=document.getElementById('monthly-strip');
-  if(cDay==='saturday'&&cTime==='night'&&isFirstSaturday()){ms.style.display='block';ms.innerHTML='🌙 <b>Tonight\'s your monthly Red Pad night</b> — swap the BHA toner for the Medicube Red Pad.';}else{ms.style.display='none';}
-  let lastPhase='';
+  let lastSec='';
   document.getElementById('preview').innerHTML=steps.map(function(s){
     const dl2=s.duration>0?(s.duration>=60?Math.round(s.duration/60)+'m':s.duration+'s'):'';
     let h='';
-    if(s.phase!==lastPhase){lastPhase=s.phase;h='<div class="ph"><div class="phl"></div><div class="phn">'+s.phase+'</div><div class="phl"></div></div>';}
+    const sk=s.transition?'trans':s.sec;
+    if(sk!==lastSec){lastSec=sk;
+      h='<div class="ph"><div class="phl"></div><div class="phn">'+(s.transition?'✨ TRANSITION':SEC[s.sec].long)+'</div><div class="phl"></div></div>';
+    }
+    if(s.transition)return h+'<div class="srow trans"><div class="srchk">✨</div><div class="src"><div class="srn">Shower complete</div><div class="srd">Grab your skincare and head to your room 🤍</div></div><div class="srdur"></div></div>';
     return h+'<div class="srow '+(s.mile?'mile':'')+'"><div class="srchk">'+(s.mile?'★':'')+'</div><div class="src"><div class="srn">'+s.name+'</div><div class="srd">'+s.detail+'</div></div><div class="srdur">'+dl2+'</div></div>';
   }).join('');
 }
@@ -930,7 +944,9 @@ function startR(){
   const dayF=DAYS.find(function(d){return d.id===cDay;}).f;
   const modeLabel=cMode==='full'?'Full Slay':cMode==='soft'?'Soft Girl':'Bare Minimum';
   document.getElementById('av-meta').textContent=dayF+' · '+modeLabel;
-  document.getElementById('av-rn').textContent=(cTime==='morning'?'Morning':'Night')+' Ritual';
+  document.getElementById('av-rn').textContent=(cTime==='morning'?'Morning':'Evening')+' Ritual';
+  const fb=document.getElementById('focusBanner');
+  fb.textContent=focusText();fb.style.display='block';
   document.getElementById('av').classList.add('vis');
   document.getElementById('dscr').classList.remove('vis');
   document.querySelector('.aaw').style.display='';
@@ -943,13 +959,25 @@ function loadStep(i){
   const step=aSteps[i];
   const pct=(i/aSteps.length)*100;
   document.getElementById('av-pf').style.width=pct+'%';
-  document.getElementById('av-sc').textContent='Step '+(i+1)+' of '+aSteps.length;
+  document.getElementById('av-sc').textContent=secProgress();
   if(step.timed&&step.duration>0){startTick(step.duration);}
   else{clearTick();sLeft=0;}
   updFinish();renderCard(step);renderAll();
 }
 
 function renderCard(step){
+  if(step.transition){
+    document.getElementById('ccw').innerHTML=
+      '<div class="cc fi" id="ccCard">'
+      +'<div class="cc-top"><div><div class="cc-ph">✨ Transition</div>'
+      +'<div class="cc-nm">Shower complete!</div></div>'
+      +'<div class="cc-mascot">'+pumpkinSVG('happy',64)+'</div></div>'
+      +'<div class="cc-dt">Grab your skincare and head to your room 🤍</div>'
+      +'<button class="mbdb" onclick="nxt()">Continue →</button>'
+      +'<div class="ccc"><button class="cb" onclick="prv()" '+(sIdx===0?'disabled':'')+'>← Back</button><div></div>'
+      +'<button class="cb" onclick="nxt()">Skip →</button></div></div>';
+    return;
+  }
   const isTimed=step.timed&&step.duration>0;
   const c=2*Math.PI*46;
   const etaTxt=isTimed?'~ finishes '+fTimeFromNow(sLeft):'~ ritual ends '+fTimeFromNow(remSecs());
@@ -960,7 +988,6 @@ function renderCard(step){
     +'<div class="cc-mascot">'+pumpkinSVG(moodFor(step.phase),64)+'</div></div>'
     +'<div class="cc-eta" id="cc-eta">'+etaTxt+'</div>'
     +'<div class="cc-dt">'+step.detail+'</div>'
-    +(step.br?'<button class="brbtn" onclick="openBreath()">🍂 breathe with me — a guided minute</button>':'')
     +(isTimed
       ?'<div class="rw"><div class="rc pulse" id="rc"><svg width="108" height="108" viewBox="0 0 108 108"><defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E08345"/><stop offset="1" stop-color="#D9A441"/></linearGradient></defs><circle class="rbg" cx="54" cy="54" r="46"/><circle class="rfg" id="rfg" cx="54" cy="54" r="46" stroke="url(#rg)" stroke-dasharray="'+c+'" stroke-dashoffset="0"/></svg><div class="ri"><div class="rd" id="rd">'+fmt(step.duration)+'</div><div class="ru">left</div></div></div></div>'
       :'<button class="mbdb" onclick="nxt()">✓ Done — Next Step</button>')
@@ -970,10 +997,16 @@ function renderCard(step){
 }
 
 function renderAll(){
+  let lastSec='';
   document.getElementById('av-list').innerHTML=aSteps.map(function(s,i){
     const dn=i<sIdx,cur=i===sIdx;
     const dl=s.duration>0?(s.duration>=60?Math.round(s.duration/60)+'m':s.duration+'s'):'';
-    return '<div class="srow '+(s.mile?'mile':'')+' '+(dn?'done':'')+' '+(cur?'cur':'')+'"><div class="srchk">'+(dn?'✓':(s.mile?'★':''))+'</div><div class="src"><div class="srn">'+s.name+'</div><div class="srd">'+s.phase+'</div></div><div class="srdur">'+dl+'</div></div>';
+    let h='';
+    const sk=s.transition?'trans':s.sec;
+    if(sk!==lastSec){lastSec=sk;
+      h='<div class="ph" style="margin:14px 2px 8px;"><div class="phl"></div><div class="phn">'+(s.transition?'✨ TRANSITION':SEC[s.sec].long)+'</div><div class="phl"></div></div>';
+    }
+    return h+'<div class="srow '+(s.mile?'mile':'')+' '+(dn?'done':'')+' '+(cur?'cur':'')+'"><div class="srchk">'+(dn?'✓':(s.mile?'★':(s.transition?'✨':'')))+'</div><div class="src"><div class="srn">'+s.name+'</div><div class="srd">'+s.phase+'</div></div><div class="srdur">'+dl+'</div></div>';
   }).join('');
   const els=document.querySelectorAll('#av-list .srow');
   if(els[sIdx])setTimeout(function(){els[sIdx].scrollIntoView({behavior:'smooth',block:'nearest'});},80);
@@ -1010,9 +1043,9 @@ function moodMsg(m){
   const gym=GYM_DAYS.includes(cDay)||(cDay==='tuesday'&&cLab);
   const base=cTime==='morning'
     ?(gym?'You trained and glowed — that\'s the whole vision board in one morning. ':'Morning ritual complete. You are that girl, every single day. ')
-    :'Night ritual done — skin, body, peace, all handled. ';
+    :'Evening ritual done — skin, body, peace, all handled. ';
   if(m==='loved')return base+'Feeling yourself? As you should. 🥰';
-  if(m==='sleepy')return base+'Off to dreamland you go. Rest well, pretty. 😴';
+  if(m==='sleepy')return base+'Soft and sleepy — cozy mode on. 😴';
   return base+'Soft, cozy, and so proud of you. 🤍';
 }
 
@@ -1046,7 +1079,7 @@ function setMood(m){
 }
 
 function exitR(){
-  clearTick();isRun=false;closeBreath();
+  clearTick();isRun=false;
   document.getElementById('av').classList.remove('vis');
   document.getElementById('dscr').classList.remove('vis');
   document.querySelector('.aaw').style.display='';
