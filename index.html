@@ -775,7 +775,6 @@ function pumpkinSVG(mood,size){
     ${pumpkinFace(mood)}</svg>`;
 }
 function moodFor(phase){
-  if(phase.indexOf('Wind-Down')>-1)return 'sleepy';
   if(phase.indexOf('Gym')>-1)return 'strong';
   if(['Skincare','Bodycare','Intimate','Feet','Bathroom'].some(p=>phase.indexOf(p)>-1))return 'sparkle';
   return 'happy';
