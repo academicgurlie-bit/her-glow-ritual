@@ -334,6 +334,13 @@
         <p class="rem-note">One treatment per night, never stacked. Recovery nights are for rest — no acids, no retinoids. Modes change the <em>amount</em> of routine, never the treatment schedule.</p>
       </div>
       <div class="rem-sec">
+        <h3>☕ Coffee &amp; Tea Notes</h3>
+        <ul>
+          <li><strong>Caffeine stacking:</strong> check your pre-workout's caffeine content before combining it with coffee. With your heart issue, ask your clinician about a safe caffeine limit before stacking caffeinated products.</li>
+          <li><strong>Tea flexibility:</strong> tea isn't only for evenings — enjoy it before studying, before a hobby, or whenever you want something comforting. Choose caffeine-free when you want to avoid caffeine interfering with sleep.</li>
+        </ul>
+      </div>
+      <div class="rem-sec">
         <h3>Hair Removal / Ingrown Reminder System</h3>
         <ol>
           <li>Exfoliate the day before</li>
@@ -454,6 +461,22 @@ const SEC={
   shower:{short:'🚿 Shower',long:'🚿 IN THE SHOWER'},
   room:{short:'🛏️ Room',long:'🛏️ AFTER THE SHOWER / IN MY ROOM'}
 };
+// ═══════════ ☕ MORNING COFFEE RITUAL (15 min) — soft/full, non-gym mornings ══
+function coffeeRitual(){
+  return [
+    S('🎧 Set the Mood — Coffee','☕ Coffee Ritual','AirPods in, soft cozy playlist on. Start the Keurig: 8 oz Café Bustelo, your sugar, a tiny splash of milk.',120),
+    S('📖 Settle Into Reading','☕ Coffee Ritual','iPad + your current book. Get comfortable and ease into the morning — no jumping straight into responsibilities.',180),
+    S('☕ Coffee & Reading','☕ Coffee Ritual','Sip slowly. Music, book, warmth — no multitasking, no checking messages. You don\'t need to finish the chapter or the cup.',600),
+  ];
+}
+// ═══════════ 🌙 EVENING TEA RITUAL (15 min) — soft/full evenings, after routine ═
+function teaRitual(){
+  return [
+    S('🍵 Prepare Your Tea','🌙 Tea Ritual','Nighttime routine is done — this is your time now. Choose your tea, boil water, steep it in your favorite mug.',180),
+    S('🕯️ Cozy Atmosphere','🌙 Tea Ritual','Bring your tea to your relaxing spot. Lighting low, soft music if you\'re in the mood. iPad, book, crochet — whatever\'s calling.',120),
+    S('🌷 Tea & Unwind','🌙 Tea Ritual','Sip slowly. No productivity required. When the timer ends, continue your evening however you choose.',600),
+  ];
+}
 
 // Morning body wash actually assigned per day (no more mystery wash)
 function washAM(day){
@@ -595,6 +618,7 @@ function nightSteps(day,mode){
     room.push(S('Dr. Althea 345 Relief Cream','🌙 Skincare','Your everyday evening moisturizer.',30));
     if(day==='sunday')room.push(S('Cicaplast Baume B5 — Extra Barrier Support','🌙 Skincare','Sunday barrier night: an extra layer of barrier support. Occasional — not your everyday moisturizer.',30));
     room.push(S('👄 Lip Care','🌙 Skincare','Keep lips moisturized and avoid picking or scraping. No scrubs, no actives on the lips.',20));
+    room.push(S('🌙 Evening Tea — If You Want It','🌙 Tea Ritual','Optional tonight — only if you\'re not running on fumes. Tea, cozy spot, no productivity required.',0,false));
   } else {
     if(b.treatment)room.push(S('Treatment — '+b.treatment,'🧴 Bodycare',b.note||'Apply evenly, then give it time to sink in.',120));
     let footDone=false;
@@ -618,6 +642,7 @@ function nightSteps(day,mode){
     if(day==='sunday')room.push(S('Cicaplast Baume B5 — Extra Barrier Support','🌙 Skincare','Sunday barrier night: an extra layer of barrier support on top of your moisturizer. Occasional — not your everyday moisturizer.',45));
     room.push(S('👄 Lip Care','🌙 Skincare','Keep lips moisturized and avoid picking or scraping. No scrubs, no actives on the lips.',20));
     room.push(S('Lash Serum — If Scheduled','🌙 Skincare','Only if it\'s in rotation tonight.',20,false));
+    room.push(...tag(teaRitual(),'room'));
   }
   tag(room,'room');
   return [...shower,transStep(),...room];
@@ -626,6 +651,9 @@ function nightSteps(day,mode){
 // ═══════════ MORNING COMPOSER — per day ═══════════
 function chillMorning(mode,day,label){
   const pre=tag([M('Wake — Bathroom, Water, Hygiene','🌅 Rise',label)],'start');
+  const cof=mode==='bare'
+    ?tag([S('☕ Coffee — If There\'s Time','☕ Coffee Ritual','Bare-minimum mornings don\'t require the full ritual. Coffee can happen later.',0,false)],'start')
+    :tag(coffeeRitual(),'start');
   const sh=tag(showerSeq('morning',day,mode),'shower');
   const post=tag([
     ...bodyAM(mode),
@@ -633,7 +661,7 @@ function chillMorning(mode,day,label){
     S('Breakfast','🍽️ Nourish','Something warm and cozy to start the day.',600),
     S('Get Dressed','👗 Out the Door','Soft layers for a soft day.',300),
   ],'room');
-  return [...pre,...sh,transStep(),...post];
+  return [...pre,...cof,...sh,transStep(),...post];
 }
 
 function morningSteps(day,mode,lab){
@@ -654,7 +682,7 @@ function morningSteps(day,mode,lab){
       ...bodyAM(mode),
       ...skinAM(mode),
       S('Get Dressed','👗 Out the Door','',300),
-      S('Breakfast','🍽️ Nourish','Real food — you trained this morning, refuel properly.',480),
+      S('Breakfast','🍽️ Nourish','Real food — you trained this morning, refuel properly. Enjoy your coffee alongside it.',480),
       S('Pack + Check School Items','🎒 Prep','',180),
       M('Final Departure Check','✅ Check','Keys, phone, wallet, water, headphones.'),
       M('🚨 6:45 AM — LEAVE HOUSE FOR TRAIN','🚉 Deadline','Hard deadline. Station is ~30 min away — this means leaving HOME, not arriving at the station.'),
@@ -666,6 +694,9 @@ function morningSteps(day,mode,lab){
       const pre=tag([
         M('Early Wake — Hygiene','🌅 Rise','Earlier start today for lab. Bathroom, water, wake up gently.'),
       ],'start');
+      const cof=mode==='bare'
+        ?tag([S('☕ Coffee — If There\'s Time','☕ Coffee Ritual','Bare-minimum mornings don\'t require the full ritual. Coffee can happen later.',0,false)],'start')
+        :tag(coffeeRitual(),'start');
       const sh=tag(showerSeq('morning',day,mode),'shower');
       const post=tag([
         ...bodyAM(mode),
@@ -675,7 +706,7 @@ function morningSteps(day,mode,lab){
         M('School / Lab Bag Check','🎒 Prep','Lab coat, notebook, everything you need.'),
         M('🚨 5:30 AM Target — Leave House (5:45 absolute latest)','🧪 Deadline','Lab-day hard deadline.'),
       ],'room');
-      return [...pre,...sh,transStep(),...post];
+      return [...pre,...cof,...sh,transStep(),...post];
     }
     return chillMorning(mode,day,'Normal, relaxed Tuesday — no forced 4 AM schedule.');
   }
@@ -719,7 +750,7 @@ function morningSteps(day,mode,lab){
       ...bodyAM(mode),
       ...skinAM(mode),
       S('Get Dressed','👗 Out the Door','',300),
-      S('Breakfast','🍽️ Nourish','',480),
+      S('Breakfast','🍽️ Nourish','Enjoy your coffee alongside breakfast.',480),
       S('🌿 Chill Buffer — Guitar / Reading / Crochet / Journaling / Coffee','🌿 Buffer','No train pressure today — this buffer is intentional, protect it.',mode==='full'?1800:mode==='soft'?900:300,mode!=='bare'),
     ],'room');
     // the chill buffer is untimed in bare mode but still part of the room section
