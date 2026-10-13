@@ -206,6 +206,23 @@
   .focus-banner{margin:12px 16px 0;background:linear-gradient(135deg,#F3E8F7,#EADCF3);border:2px solid #C9B3DD;border-radius:16px;padding:10px 14px;font-size:13px;font-weight:800;color:#6B4E8E;text-align:center;line-height:1.5;}
   .srow.trans{border-style:dashed;border-color:var(--caramel);background:#FDF3DF;}
   .rem-note{font-size:13px;font-weight:600;color:var(--ink-soft);line-height:1.7;margin-top:10px;}
+  /* ─── clean romantic checklist overlay ─── */
+  .glow-sub{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:16px;color:var(--ink-soft);line-height:1.6;margin-bottom:14px;}
+  .glow-plbl{text-align:center;font-weight:800;color:#c98aa0;font-size:13px;margin-bottom:8px;}
+  .glow-track{height:12px;background:#ffe4ee;border-radius:999px;overflow:hidden;}
+  .glow-fill{height:100%;width:0%;background:linear-gradient(90deg,#ffc2d6,#ff8fab);border-radius:999px;transition:width .4s ease;}
+  .glow-cheer{text-align:center;font-weight:800;color:#c25e7e;min-height:1.6em;margin:8px 0 2px;font-size:14px;}
+  .glow-sec{margin:20px 0 4px;font-size:15px;font-weight:800;color:var(--ink);}
+  .glow-hint{font-size:12px;font-weight:600;color:var(--muted);margin:0 0 10px;line-height:1.5;}
+  .gitem{display:flex;align-items:flex-start;gap:12px;width:100%;text-align:left;background:var(--card2);border:2px solid var(--border-soft);border-radius:18px;padding:13px 14px;margin-bottom:10px;cursor:pointer;font-family:inherit;font-size:14px;font-weight:700;color:var(--ink);transition:all .15s;user-select:none;-webkit-tap-highlight-color:transparent;}
+  .gitem:active{transform:scale(.98);}
+  .gbox{flex:0 0 26px;height:26px;border-radius:50%;border:2px solid #ffb7cd;display:flex;align-items:center;justify-content:center;font-size:14px;background:#fff;transition:all .15s;margin-top:1px;color:#fff;}
+  .gitem.done{background:#fff5f9;border-color:#ffd0e0;}
+  .gitem.done .gbox{background:linear-gradient(135deg,#ffb7cd,#ff8fab);border-color:#ff8fab;}
+  .gitem.done .gtxt{text-decoration:line-through;opacity:.55;}
+  .gtxt small{display:block;color:var(--muted);font-size:12px;font-weight:600;margin-top:2px;line-height:1.55;}
+  .glow-reset{display:block;width:100%;border:2px solid #ffc2d6;cursor:pointer;background:#fff;color:#c25e7e;font-size:14px;font-weight:800;font-family:inherit;padding:13px;border-radius:999px;margin-top:18px;transition:transform .12s;}
+  .glow-reset:active{transform:scale(.97);}
   @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
   .fi{animation:fadeUp .3s ease both;}
 </style>
@@ -218,6 +235,7 @@
       <button class="hbtn" id="soundBtn" onclick="togSound()" title="sounds">🔔</button>
       <button class="hbtn" onclick="openPatch()" title="my pumpkin patch">🎃</button>
       <button class="hbtn" onclick="openRem()" title="reminders">🍂</button>
+      <button class="hbtn" onclick="openGlow()" title="clean romantic checklist">🎀</button>
     </div>
     <div class="mascot" id="hdrMascot"></div>
     <div class="app-eyebrow">🍂 Her Glow Ritual 🍂</div>
@@ -411,6 +429,31 @@
         <div class="pstat"><div class="pstat-v" id="ps-streak">0</div><div class="pstat-l">Day Streak</div></div>
         <div class="pstat"><div class="pstat-v" id="ps-week">0/14</div><div class="pstat-l">This Week</div></div>
       </div>
+    </div>
+  </div>
+</div>
+
+<div class="ov" id="glowOv">
+  <div class="ov-inner">
+    <div class="ov-card">
+      <div class="ov-head">
+        <div class="ov-title">🎀 Clean <em>Romantic</em> Era</div>
+        <button class="av-exit" onclick="closeGlow()">✕ Close</button>
+      </div>
+      <div class="glow-sub">minimal effort, maximum effect. you wake up like this — literally.</div>
+      <div class="glow-plbl" id="glow-plbl">0 of 17 done</div>
+      <div class="glow-track"><div class="glow-fill" id="glow-fill"></div></div>
+      <div class="glow-cheer" id="glow-cheer"></div>
+      <div class="glow-sec">🌅 Every day</div>
+      <p class="glow-hint">tiny things. under 5 minutes total.</p>
+      <div id="glow-daily"></div>
+      <div class="glow-sec">💆 A few times a week</div>
+      <p class="glow-hint">Sun · Wed · Fri — quick, not a production.</p>
+      <div id="glow-midweek"></div>
+      <div class="glow-sec">🌙 Sunday Maintenance</div>
+      <p class="glow-hint">your weekly high-maintenance reset — run it Sunday night and stay THAT girl all week.</p>
+      <div id="glow-weekly"></div>
+      <button class="glow-reset" onclick="resetGlow()">reset for a new day ♻️</button>
     </div>
   </div>
 </div>
@@ -1107,6 +1150,52 @@ function exitR(){
 
 function openRem(){document.getElementById('remOv').classList.add('vis');}
 function closeRem(){document.getElementById('remOv').classList.remove('vis');}
+
+// ─── Clean Romantic checklist ───────────────────────────────────────────────
+const GLOW_ITEMS=[
+ {sec:"daily",icon:"💧",t:"Water + lip balm first thing",s:"Hydrated lips = the whole bareface look"},
+ {sec:"daily",icon:"🪞",t:"Brush brows up into place",s:"30 seconds. Frames everything."},
+ {sec:"daily",icon:"👄",t:"Pink gloss or lip oil in the bag",s:"Reapply = instant romance, all day"},
+ {sec:"daily",icon:"🎀",t:"One soft-girl detail",s:"A bow, your layered necklaces, your scent — pick one, wear it"},
+ {sec:"daily",icon:"✨",t:"Lash serum at night",s:"Consistency is your mascara. Don't skip."},
+ {sec:"daily",icon:"😴",t:"Bonnet on before sleep",s:"Protect the hair, protect the glow"},
+ {sec:"daily",icon:"🌿",t:"Hair serum at night",s:"Peptide serum along the scalp + parts — lift the wig, dab it in. Growth stack stays consistent."},
+ {sec:"midweek",icon:"💆",t:"Scalp oiling — Sun / Wed / Fri",s:"Light oil along the parts under the wig. 2 minutes, no buildup. 2–3x a week, never nightly."},
+ {sec:"weekly",icon:"🪒",t:"Shave day",s:"Legs, underarms, bikini line — per your bible's hair removal routine"},
+ {sec:"weekly",icon:"💅",t:"Press-on reset",s:"Fresh set, cuticle oil in between"},
+ {sec:"weekly",icon:"🌷",t:"Brow shape upkeep",s:"Tweeze/shape check — keep the frame clean"},
+ {sec:"weekly",icon:"🤍",t:"Teeth whitening session",s:"White teeth + glossy lips = bareface mogging"},
+ {sec:"weekly",icon:"🛁",t:"Everything shower",s:"Full body care reset, exfoliate, smell-good layering"},
+ {sec:"weekly",icon:"🧴",t:"Full-body glow",s:"Lotion + oil everywhere — soft all over, head to toe"},
+ {sec:"weekly",icon:"💇",t:"Hair refresh",s:"Wash, refresh, or reinstall — hair always done"},
+ {sec:"weekly",icon:"👄",t:"Lip mask overnight",s:"Balm heavy before bed — wake up juicy"},
+ {sec:"weekly",icon:"💎",t:"Piercing cleaning routine",s:"Sterile saline on everything: brow, both nostrils, septum (clean in place — don't remove it), nipples, navel, ears. Goodbye septum funk. No alcohol or peroxide ever — they damage healing cells. Pat dry with a clean paper towel, don't twist jewelry, don't over-clean. Go extra gentle on the brow if it's flaring. Daily: warm shower water running over them is enough."}
+];
+const GLOW_CHEERS={14:"FLAWLESS. Bareface mogging: achieved. 👑",11:"So close — finish strong, pretty 💗",8:"Halfway there and already glowing ✨",4:"Warming up… the glow is loading 🌸",1:"Started! That's the hardest part 💪"};
+let glowState=lsGet('gr5_glow',{});
+function openGlow(){renderGlow();document.getElementById('glowOv').classList.add('vis');}
+function closeGlow(){document.getElementById('glowOv').classList.remove('vis');}
+function resetGlow(){glowState={};lsSet('gr5_glow',glowState);renderGlow();}
+function renderGlow(){
+ ["daily","midweek","weekly"].forEach(function(sec){
+  const box=document.getElementById('glow-'+sec);box.innerHTML="";
+  GLOW_ITEMS.forEach(function(it,i){
+   if(it.sec!==sec)return;
+   const done=!!glowState[i];
+   const d=document.createElement('div');
+   d.className='gitem'+(done?' done':'');
+   d.innerHTML='<div class="gbox">'+(done?'✓':'')+'</div><div class="gtxt">'+it.icon+' '+it.t+'<small>'+it.s+'</small></div>';
+   d.onclick=function(){glowState[i]=!glowState[i];lsSet('gr5_glow',glowState);renderGlow();};
+   box.appendChild(d);
+  });
+ });
+ const n=GLOW_ITEMS.filter(function(_,i){return glowState[i];}).length;
+ document.getElementById('glow-plbl').textContent=n+' of '+GLOW_ITEMS.length+' done';
+ document.getElementById('glow-fill').style.width=(n/GLOW_ITEMS.length*100)+'%';
+ let cheer="";
+ Object.keys(GLOW_CHEERS).map(Number).sort(function(a,b){return b-a;}).forEach(function(k){if(n>=k&&!cheer)cheer=GLOW_CHEERS[k];});
+ document.getElementById('glow-cheer').textContent=cheer;
+}
 
 // ─── Fall leaves ────────────────────────────────────────────────────────────
 const LEAF_COLORS=['#E8A87C','#D9A441','#C96F33','#F0C9A8','#B08968'];
