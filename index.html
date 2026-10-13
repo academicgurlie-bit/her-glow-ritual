@@ -450,7 +450,7 @@ function setupPWA(){try{const u=buildIcon();document.getElementById('apple-touch
 
 // ─── Data ───────────────────────────────────────────────────────────────────
 const DAYS=[{id:'monday',l:'Mon',f:'Monday'},{id:'tuesday',l:'Tue',f:'Tuesday'},{id:'wednesday',l:'Wed',f:'Wednesday'},{id:'thursday',l:'Thu',f:'Thursday'},{id:'friday',l:'Fri',f:'Friday'},{id:'saturday',l:'Sat',f:'Saturday'},{id:'sunday',l:'Sun',f:'Sunday'}];
-const GYM_DAYS=['monday','wednesday','friday'];
+const GYM_DAYS=['monday','friday'];
 function S(n,p,d,dur=60,t=true){return{name:n,phase:p,detail:d,duration:dur,timed:t};}
 function M(n,p,d){return{name:n,phase:p,detail:d,duration:0,timed:false,mile:true};}
 // ─── Sections: every ritual is split into location-based sections ────────────
@@ -711,24 +711,13 @@ function morningSteps(day,mode,lab){
     return chillMorning(mode,day,'Normal, relaxed Tuesday — no forced 4 AM schedule.');
   }
   if(day==='wednesday'){
-    const pre=tag([
-      M('4:20 AM — Wake','🌅 Rise','Bathroom, water, quick fuel — banana + protein shake.'),
-      S('Get Dressed + Grab Gym & School Bags','👟 Prep','Train-day layers laid out last night, so this is grab-and-go.',180),
-      M('4:40 AM — Leave Home','🚗 Transit',''),
-      M('~4:50 AM — Arrive at Gym','💪 Gym','Gym opens at 5:00 — use the wait to stretch.'),
-      S('5:00–5:30 Efficient Lower-Body Workout','💪 Gym','Keep it efficient — the whole morning protects the station deadline.',1800),
-    ],'start');
-    const sh=tag([
-      S('5:30–5:45 Gym Shower','🚿 Bathroom','Warm not hot, quick wash. Face cleanser goes on and rinses off right here too. Pat dry — bone dry underarms before anything else.',900),
-    ],'shower');
-    const post=tag([
-      S('5:45–5:50 Bodycare + Skincare — Efficient','☀️ Skincare','Lotion + deodorant first, then whichever skincare mode you\'ve picked. Keep it brisk — this window is tight by design.',300),
-      S('Get Dressed at Gym','👗 Prep','Train-day outfit — comfortable but cute.',180),
-      S('Hair, Deodorant + Final Check','✅ Check','Bags grabbed, quick mirror check, water filled.',120),
-      M('~5:50 AM — Leave Gym','🚗 Transit','Straight to the station — not home.'),
-      M('🚨 ~6:10 AM — Arrive at Train Station (absolute latest)','🚉 Deadline','Straight from the gym to the station — not home.'),
-    ],'room');
-    return [...pre,...sh,...post];
+    let s=chillMorning(mode,day,'Train-day morning — no gym today, just a smooth start before the station.');
+    s.push(...tag([
+      M('School Bag Check','🎒 Prep','Everything for the day — train days are not the day to forget things.'),
+      M('🚨 ~5:40 AM — Leave Home for the Station','🚗 Transit','Station is ~30 min away — don\'t cut it close.'),
+      M('🚨 ~6:10 AM — Arrive at Train Station (absolute latest)','🚉 Deadline',''),
+    ],'room'));
+    return s;
   }
   if(day==='thursday'){
     let s=chillMorning(mode,day,'Chill morning — no gym deadline, no unnecessary 4 AM wake-up.');
