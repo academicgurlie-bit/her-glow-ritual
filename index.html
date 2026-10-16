@@ -856,8 +856,37 @@ const AFFIRM={
 function setAffirm(){document.getElementById('affirmLine').textContent=AFFIRM[cDay]||'cozy mornings & evenings · three ways to glow';}
 
 // ─── Storage helpers ────────────────────────────────────────────────────────
-function lsGet(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v);}catch(e){return d;}}
-function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+// localStorage is primary; a long-lived cookie mirrors it as backup because
+// iOS "Add to Home Screen" web apps are known to wipe localStorage.
+function ckGet(k){
+  try{
+    const m=document.cookie.match(new RegExp('(?:^|;\\s*)gr5c_'+k+'=([^;]*)'));
+    return m?JSON.parse(decodeURIComponent(m[1])):undefined;
+  }catch(e){return undefined;}
+}
+function ckSet(k,v){
+  try{
+    const s=encodeURIComponent(JSON.stringify(v));
+    if(s.length>3500)return; // stay under per-cookie size limits
+    document.cookie='gr5c_'+k+'='+s+';max-age=34560000;path=/;SameSite=Lax';
+  }catch(e){}
+}
+function lsGet(k,d){
+  try{const v=localStorage.getItem(k);if(v!=null)return JSON.parse(v);}catch(e){}
+  const c=ckGet(k);
+  return c===undefined?d:c;
+}
+function lsSet(k,v){
+  try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}
+  let cv=v;
+  if(k==='gr5_patch'&&v&&typeof v==='object'){
+    // patch history grows daily — mirror only the last 60 days so the
+    // cookie backup stays well under per-cookie size limits
+    const keys=Object.keys(v).sort().slice(-60);
+    cv={};keys.forEach(function(x){cv[x]=v[x];});
+  }
+  ckSet(k,cv);
+}
 let patch=lsGet('gr5_patch',{});
 let soundOn=lsGet('gr5_sound',true);
 function dayKey(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
@@ -934,7 +963,8 @@ function leafConfetti(container){
 }
 
 // ─── App state / rendering (timer engine) ───────────────────────────────────
-let cDay='monday',cTime='morning',cMode='soft',cLab=false;
+const _DOW=['sunday','monday','tuesday','wednesday','thursday','friday','saturday'];
+let cDay=_DOW[new Date().getDay()],cTime='morning',cMode='soft',cLab=false;
 let aSteps=[],sIdx=0,sTotal=0,sLeft=0,isRun=false,tInt=null,sTime=null,tShift=0;
 
 function renderDayRow(){
