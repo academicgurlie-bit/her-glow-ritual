@@ -582,10 +582,6 @@ function skinAM(mode){
 function bodyAM(mode){
   const soft=mode==='soft',full=mode==='full';
   let s=[];
-  if(soft||full)s.push(
-    S('Witch Hazel Wipe — Pits + Behind Ears','🧴 Bodycare','Quick swipe. Part of the soft-girl-and-up layer.',30),
-    S('Studex Hypochlorous Spray','🧴 Bodycare','A light mist all over — it calms everything down.',20),
-  );
   if(soft||full)s.push(S('EOS Vanilla Cashmere Body Oil','🧴 Bodycare','On damp skin, before the lotion. Smells like a hug.',45));
   s.push(S('EOS Vanilla Cashmere Lotion','🧴 Bodycare','All over, nice and even.',60));
   if(full)s.push(S('Johnson\'s Shea + Cocoa Oil Gel — Dry Spots','🧴 Bodycare','Targeted only, wherever feels dry today.',30));
@@ -1036,10 +1032,13 @@ function startR(){
   document.getElementById('av').classList.add('vis');
   document.getElementById('dscr').classList.remove('vis');
   document.querySelector('.aaw').style.display='';
+  sEnd=null;completing=false;reqWake();
+  renderAll();loadStep(0);
   renderAll();loadStep(0);
 }
 
 function loadStep(i){
+  completing=false;
   if(i>=aSteps.length){finish();return;}
   sIdx=i;
   const step=aSteps[i];
@@ -1047,7 +1046,7 @@ function loadStep(i){
   document.getElementById('av-pf').style.width=pct+'%';
   document.getElementById('av-sc').textContent=secProgress();
   if(step.timed&&step.duration>0){startTick(step.duration);}
-  else{clearTick();sLeft=0;}
+  else{clearTick();sLeft=0;sEnd=null;}
   updFinish();renderCard(step);renderAll();
 }
 
@@ -1098,12 +1097,39 @@ function renderAll(){
   if(els[sIdx])setTimeout(function(){els[sIdx].scrollIntoView({behavior:'smooth',block:'nearest'});},80);
 }
 
+// ─── Background-proof timer ─────────────────────────────────────────────────
+// iOS suspends setInterval when the page is backgrounded, so the countdown is
+// anchored to wall-clock time (sEnd). Coming back re-syncs from Date.now() —
+// the timer never loses time. A screen wake lock keeps the display awake
+// during the ritual on OSes that support it.
+let sEnd=null, wakeLock=null, completing=false;
+function stepRemaining(){ return sEnd==null ? sLeft : Math.max(0, Math.round((sEnd-Date.now())/1000)); }
+function reqWake(){ try{ if('wakeLock' in navigator){ navigator.wakeLock.request('screen').then(function(w){ wakeLock=w; }).catch(function(){}); } }catch(e){} }
+function relWake(){ try{ if(wakeLock){ wakeLock.release(); } }catch(e){} wakeLock=null; }
+function stepDone(){
+  if(completing) return; completing=true;
+  clearTick(); sEnd=null;
+  chime(); if(navigator.vibrate)navigator.vibrate([200,100,200]);
+  setTimeout(function(){ completing=false; nxt(); },1200);
+}
+function syncTick(){
+  if(!isRun || sEnd==null || completing) return;
+  sLeft=stepRemaining(); updRing();
+  if(sLeft<=0) stepDone();
+}
+document.addEventListener('visibilitychange', function(){
+  if(document.visibilityState!=='visible') return;
+  if(!document.getElementById('av').classList.contains('vis')) return;
+  reqWake();
+  syncTick();
+});
+
 function startTick(d){
-  clearTick();sTotal=d;sLeft=d;isRun=true;updRing();
+  clearTick();sTotal=d;sLeft=d;sEnd=Date.now()+d*1000;isRun=true;completing=false;updRing();
   tInt=setInterval(function(){
-    if(!isRun)return;
-    sLeft--;updRing();
-    if(sLeft<=0){clearTick();chime();if(navigator.vibrate)navigator.vibrate([200,100,200]);setTimeout(nxt,1200);}
+    if(!isRun||completing)return;
+    sLeft=stepRemaining();updRing();
+    if(sLeft<=0)stepDone();
   },1000);
 }
 
@@ -1120,7 +1146,12 @@ function updRing(){
 }
 
 function clearTick(){if(tInt){clearInterval(tInt);tInt=null;}}
-function togP(){isRun=!isRun;const b=document.getElementById('pb');if(b)b.textContent=isRun?'⏸ Pause':'▶ Resume';}
+function togP(){
+  if(isRun){ sLeft=stepRemaining(); }
+  else { sEnd=Date.now()+sLeft*1000; }
+  isRun=!isRun;
+  const b=document.getElementById('pb');if(b)b.textContent=isRun?'⏸ Pause':'▶ Resume';
+}
 function nxt(){chime();clearTick();loadStep(sIdx+1);setTimeout(function(){sparkleBurst(document.getElementById('ccCard'));},60);}
 function prv(){if(sIdx===0)return;clearTick();loadStep(sIdx-1);}
 function fmt(s){const m=Math.floor(s/60),sc=s%60;return m>0?m+':'+sc.toString().padStart(2,'0'):'0:'+sc.toString().padStart(2,'0');}
@@ -1136,7 +1167,7 @@ function moodMsg(m){
 }
 
 function finish(){
-  clearTick();isRun=false;
+  clearTick();isRun=false;relWake();sEnd=null;
   document.getElementById('ccw').innerHTML='';
   document.querySelector('.aaw').style.display='none';
   document.getElementById('av-pf').style.width='100%';
@@ -1165,7 +1196,7 @@ function setMood(m){
 }
 
 function exitR(){
-  clearTick();isRun=false;
+  clearTick();isRun=false;relWake();sEnd=null;
   document.getElementById('av').classList.remove('vis');
   document.getElementById('dscr').classList.remove('vis');
   document.querySelector('.aaw').style.display='';
