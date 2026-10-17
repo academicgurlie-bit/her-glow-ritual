@@ -441,18 +441,12 @@
         <button class="av-exit" onclick="closeGlow()">✕ Close</button>
       </div>
       <div class="glow-sub">minimal effort, maximum effect. you wake up like this — literally.</div>
-      <div class="glow-plbl" id="glow-plbl">0 of 17 done</div>
+      <div class="glow-plbl" id="glow-plbl">0 of 7 done</div>
       <div class="glow-track"><div class="glow-fill" id="glow-fill"></div></div>
       <div class="glow-cheer" id="glow-cheer"></div>
       <div class="glow-sec">🌅 Every day</div>
       <p class="glow-hint">tiny things. under 5 minutes total.</p>
       <div id="glow-daily"></div>
-      <div class="glow-sec">💆 A few times a week</div>
-      <p class="glow-hint">Sun · Wed · Fri — quick, not a production.</p>
-      <div id="glow-midweek"></div>
-      <div class="glow-sec">🌙 Sunday Maintenance</div>
-      <p class="glow-hint">your weekly high-maintenance reset — run it Sunday night and stay THAT girl all week.</p>
-      <div id="glow-weekly"></div>
       <button class="glow-reset" onclick="resetGlow()">reset for a new day ♻️</button>
     </div>
   </div>
@@ -1189,25 +1183,15 @@ const GLOW_ITEMS=[
  {sec:"daily",icon:"🎀",t:"One soft-girl detail",s:"A bow, your layered necklaces, your scent — pick one, wear it"},
  {sec:"daily",icon:"✨",t:"Lash serum at night",s:"Consistency is your mascara. Don't skip."},
  {sec:"daily",icon:"😴",t:"Bonnet on before sleep",s:"Protect the hair, protect the glow"},
- {sec:"daily",icon:"🌿",t:"Hair serum at night",s:"Peptide serum along the scalp + parts — lift the wig, dab it in. Growth stack stays consistent."},
- {sec:"midweek",icon:"💆",t:"Scalp oiling — Sun / Wed / Fri",s:"Light oil along the parts under the wig. 2 minutes, no buildup. 2–3x a week, never nightly."},
- {sec:"weekly",icon:"🪒",t:"Shave day",s:"Legs, underarms, bikini line — per your bible's hair removal routine"},
- {sec:"weekly",icon:"💅",t:"Press-on reset",s:"Fresh set, cuticle oil in between"},
- {sec:"weekly",icon:"🌷",t:"Brow shape upkeep",s:"Tweeze/shape check — keep the frame clean"},
- {sec:"weekly",icon:"🤍",t:"Teeth whitening session",s:"White teeth + glossy lips = bareface mogging"},
- {sec:"weekly",icon:"🛁",t:"Everything shower",s:"Full body care reset, exfoliate, smell-good layering"},
- {sec:"weekly",icon:"🧴",t:"Full-body glow",s:"Lotion + oil everywhere — soft all over, head to toe"},
- {sec:"weekly",icon:"💇",t:"Hair refresh",s:"Wash, refresh, or reinstall — hair always done"},
- {sec:"weekly",icon:"👄",t:"Lip mask overnight",s:"Balm heavy before bed — wake up juicy"},
- {sec:"weekly",icon:"💎",t:"Piercing cleaning routine",s:"Sterile saline on everything: brow, both nostrils, septum (clean in place — don't remove it), nipples, navel, ears. Goodbye septum funk. No alcohol or peroxide ever — they damage healing cells. Pat dry with a clean paper towel, don't twist jewelry, don't over-clean. Go extra gentle on the brow if it's flaring. Daily: warm shower water running over them is enough."}
+ {sec:"daily",icon:"🌿",t:"Hair serum at night",s:"Peptide serum along the scalp + parts — lift the wig, dab it in. Growth stack stays consistent."}
 ];
-const GLOW_CHEERS={14:"FLAWLESS. Bareface mogging: achieved. 👑",11:"So close — finish strong, pretty 💗",8:"Halfway there and already glowing ✨",4:"Warming up… the glow is loading 🌸",1:"Started! That's the hardest part 💪"};
+const GLOW_CHEERS={7:"FLAWLESS. Bareface mogging: achieved. 👑",5:"So close — finish strong, pretty 💗",3:"Halfway there and already glowing ✨",1:"Started! That's the hardest part 💪"};
 let glowState=lsGet('gr5_glow',{});
 function openGlow(){renderGlow();document.getElementById('glowOv').classList.add('vis');}
 function closeGlow(){document.getElementById('glowOv').classList.remove('vis');}
 function resetGlow(){glowState={};lsSet('gr5_glow',glowState);renderGlow();}
 function renderGlow(){
- ["daily","midweek","weekly"].forEach(function(sec){
+ ["daily"].forEach(function(sec){
   const box=document.getElementById('glow-'+sec);box.innerHTML="";
   GLOW_ITEMS.forEach(function(it,i){
    if(it.sec!==sec)return;
